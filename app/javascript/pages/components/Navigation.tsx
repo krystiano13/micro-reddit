@@ -1,5 +1,6 @@
-import { AppShell, Title, Input, Burger } from '@mantine/core'
+import { AppShell, Title, Input, Burger, useMantineColorScheme } from '@mantine/core'
 import { useDisclosure } from "@mantine/hooks";
+import { useEffect } from "react";
 import type { ReactNode } from "react";
 import styled from "styled-components";
 
@@ -18,6 +19,11 @@ const Header = styled.div`
 
 export function Navigation({ children }: Props) {
     const [opened, { toggle }] = useDisclosure();
+    const { setColorScheme } = useMantineColorScheme();
+
+    useEffect(() => {
+        setColorScheme("dark");
+    }, []);
 
     return (
         <AppShell
@@ -31,7 +37,7 @@ export function Navigation({ children }: Props) {
         >
             <AppShell.Header>
                 <Header>
-                    <Title order={2}>REDDIT:RE</Title>
+                    <Title c="blue" order={2}>REDDIT:RE</Title>
                     <Input
                         placeholder="search"
                         name="reddit"
