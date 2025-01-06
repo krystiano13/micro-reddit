@@ -1,7 +1,8 @@
 import { createInertiaApp } from '@inertiajs/react'
-import { createElement, ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { createTheme, MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
+import { Navigation } from "../pages/components/Navigation.tsx";
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {
@@ -43,7 +44,9 @@ createInertiaApp({
       const root = createRoot(el);
       root.render(
           <MantineProvider>
-              <App {...props} />
+              <Navigation>
+                <App {...props} />
+              </Navigation>
           </MantineProvider>
       );
     } else {
