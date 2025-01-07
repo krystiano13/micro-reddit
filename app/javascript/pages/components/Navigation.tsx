@@ -93,7 +93,7 @@ export function Navigation({ children, user }: Props) {
                         }
                     </section>
                     <Card>
-                        { !user && <Text>Guest</Text> }
+                        { !user && <Text>You are logged as Guest</Text> }
                         { user && <>
                             <Text fw={700}>{ user.name }</Text>
                             <Text fw={500}>{ user.email }</Text>
