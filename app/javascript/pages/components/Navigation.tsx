@@ -1,6 +1,6 @@
 import { router } from "@inertiajs/react";
 import { AppShell, Title, Input, Burger, useMantineColorScheme } from '@mantine/core'
-import { Button, Card } from "@mantine/core";
+import { Button, Card, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
@@ -93,7 +93,11 @@ export function Navigation({ children, user }: Props) {
                         }
                     </section>
                     <Card>
-
+                        { !user && <Text>Guest</Text> }
+                        { user && <>
+                            <Text fw={700}>{ user.name }</Text>
+                            <Text fw={500}>{ user.email }</Text>
+                        </> }
                     </Card>
                 </Nav>
             </AppShell.Navbar>
