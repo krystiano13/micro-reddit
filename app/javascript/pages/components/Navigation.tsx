@@ -1,13 +1,14 @@
-import { Link } from '@inertiajs/react'
+import { router } from "@inertiajs/react";
 import { AppShell, Title, Input, Burger, useMantineColorScheme } from '@mantine/core'
-import { Button } from "@mantine/core";
+import { Button, Card } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 import styled from "styled-components";
 
 interface Props {
-    children: ReactNode
+    children: ReactNode,
+    user: any
 }
 
 const Header = styled.div`
@@ -24,6 +25,7 @@ const Nav = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 1.25rem;
     
     padding: 1.5rem;
@@ -33,7 +35,7 @@ const Nav = styled.div`
     }
 `;
 
-export function Navigation({ children }: Props) {
+export function Navigation({ children, user }: Props) {
     const [opened, { toggle }] = useDisclosure();
     const { setColorScheme } = useMantineColorScheme();
 
@@ -71,12 +73,28 @@ export function Navigation({ children }: Props) {
             </AppShell.Header>
             <AppShell.Navbar>
                 <Nav>
-                    <a href="/users/sign_in">
-                        <Button variant="light">Log In</Button>
-                    </a>
-                    <a href="/users/sign_up">
-                        <Button>Register</Button>
-                    </a>
+                    <section style={{ display: "flex", flexDirection: "column",gap: "1rem" }}>
+                        {
+                            !user &&
+                            <>
+                                <a href="/users/sign_in">
+                                    <Button variant="light">Log In</Button>
+                                </a>
+                                <a href="/users/sign_up">
+                                    <Button>Register</Button>
+                                </a>
+                            </>
+                        }
+                        {
+                            user &&
+                            <Button onClick={() => router.delete("/users/sign_out")}>
+                                Log Out
+                            </Button>
+                        }
+                    </section>
+                    <Card>
+
+                    </Card>
                 </Nav>
             </AppShell.Navbar>
             <AppShell.Main>

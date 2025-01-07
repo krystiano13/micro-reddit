@@ -2,7 +2,6 @@ import { createInertiaApp } from '@inertiajs/react'
 import { ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MantineProvider } from '@mantine/core';
-import { Navigation } from "../pages/components/Navigation.tsx";
 import '@mantine/core/styles.css';
 
 // Temporary type definition, until @inertiajs/react provides one
@@ -45,9 +44,7 @@ createInertiaApp({
       const root = createRoot(el);
       root.render(
           <MantineProvider>
-              <Navigation>
-                <App {...props} />
-              </Navigation>
+            <App {...props} />
           </MantineProvider>
       );
     } else {
