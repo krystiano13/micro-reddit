@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { MantineProvider } from '@mantine/core';
 import { Navigation } from "../pages/components/Navigation.tsx";
+import '@mantine/core/styles.css';
 
 // Temporary type definition, until @inertiajs/react provides one
 type ResolvedComponent = {

@@ -7,4 +7,11 @@ export default defineConfig({
     react(),
     RubyPlugin(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "variables";`
+      }
+    }
+  }
 })

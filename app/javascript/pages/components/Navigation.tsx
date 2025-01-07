@@ -1,4 +1,6 @@
+import { Link } from '@inertiajs/react'
 import { AppShell, Title, Input, Burger, useMantineColorScheme } from '@mantine/core'
+import { Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
@@ -15,6 +17,20 @@ const Header = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
+`;
+
+const Nav = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    
+    padding: 1.5rem;
+    
+    button {
+        width: 100%;
+    }
 `;
 
 export function Navigation({ children }: Props) {
@@ -54,10 +70,17 @@ export function Navigation({ children }: Props) {
                 </Header>
             </AppShell.Header>
             <AppShell.Navbar>
-
+                <Nav>
+                    <a href="/users/sign_in">
+                        <Button variant="light">Log In</Button>
+                    </a>
+                    <a href="/users/sign_up">
+                        <Button>Register</Button>
+                    </a>
+                </Nav>
             </AppShell.Navbar>
             <AppShell.Main>
-                { children }
+                {children}
             </AppShell.Main>
         </AppShell>
     )

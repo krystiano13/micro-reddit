@@ -1,6 +1,5 @@
 import { Head } from '@inertiajs/react'
 import { Input } from '@mantine/core';
-import '@mantine/core/styles.css';
 
 export default function Home({ name }: { name: string }) {
   return (
