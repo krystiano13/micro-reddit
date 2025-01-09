@@ -6,6 +6,12 @@ body, html {
     height: 95%;
 }
 
+br {
+    display: inline;
+    content: ' ';
+    clear:none;
+}
+
 .error {
     margin: 0;
     text-align: center;
@@ -104,15 +110,6 @@ html {
 }
 
 .field {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-
-    br {
-        display: inline;
-        content: ' ';
-        clear:none;
-    }
-
     input {
         transition: border 450ms;
         will-change: border;
@@ -146,7 +143,7 @@ html {
 }
 
 .mantine-button-light {
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     box-sizing: border-box;
     font: 600 14px / 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     appearance: none;
@@ -179,7 +176,7 @@ html {
 }
 
 .mantine-button {
-    margin-bottom: 1rem;
+    margin-top: 1rem;
     box-sizing: border-box;
     font: 600 14px / 14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
     appearance: none;
@@ -203,6 +200,14 @@ html {
     border: 1px solid rgba(0, 0, 0, 0);
 }
 
+.mantine-button-gray {
+    background: none 0% 0% / auto repeat scroll padding-box border-box rgb(103, 103, 103);
+}
+
 .mantine-button:hover {
     background: none 0% 0% / auto repeat scroll padding-box border-box rgb(24, 100, 171);
+}
+
+.mantine-button-gray:hover {
+    background: none 0% 0% / auto repeat scroll padding-box border-box rgb(145, 145, 145);
 }
