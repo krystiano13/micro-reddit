@@ -87,7 +87,9 @@ export function Navigation({ children, user }: Props) {
                         }
                         {
                             user &&
-                            <Button onClick={() => router.delete("/users/sign_out")}>
+                            <Button onClick={() => {
+                                router.delete("/users/sign_out");
+                            }}>
                                 Log Out
                             </Button>
                         }
