@@ -29,7 +29,11 @@ class SubredditController < ApplicationController
   end
 
   def create ;end
-  def new ;end
+
+  def new
+    render inertia: "Subreddit/New", layout: "application"
+  end
+
   def update ;end;
   def edit; end
   def destroy ;end
