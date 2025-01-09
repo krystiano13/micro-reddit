@@ -41,7 +41,11 @@ class SubredditController < ApplicationController
   end
 
   def update ;end;
-  def edit; end
+
+  def edit
+    render inertia: "Subreddit/Edit", layout: "application"
+  end
+
   def destroy ;end
 
   private
