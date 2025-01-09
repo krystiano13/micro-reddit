@@ -109,6 +109,9 @@ GEM
       responders
       warden (~> 1.2.3)
     dotenv (3.1.7)
+    dotenv-rails (3.1.7)
+      dotenv (= 3.1.7)
+      railties (>= 6.1)
     drb (2.2.1)
     dry-cli (1.2.0)
     ed25519 (1.3.0)
@@ -425,6 +428,7 @@ DEPENDENCIES
   capybara
   debug
   devise
+  dotenv-rails
   importmap-rails
   inertia_rails
   jbuilder

@@ -59,6 +59,7 @@
     <orderEntry type="library" scope="PROVIDED" name="debug (v1.10.0, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="devise (v4.9.4, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dotenv (v3.1.7, mise: 3.4.1) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="dotenv-rails (v3.1.7, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="drb (v2.2.1, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="dry-cli (v1.2.0, mise: 3.4.1) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="ed25519 (v1.3.0, mise: 3.4.1) [gem]" level="application" />
