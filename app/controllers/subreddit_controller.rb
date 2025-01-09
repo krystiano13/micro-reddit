@@ -1,10 +1,16 @@
 class SubredditController < ApplicationController
   def index
     search = params[:search]
+    page = 0
+
     subreddits = []
 
+    if params[:page]
+      page = params[:page]
+    end
+
     if search
-      subreddits = Subreddit.where("name like ?", "%#{search}%").limit(10)
+      subreddits = Subreddit.where("name like ?", "%#{search}%").limit(10).offset(page * 10)
     end
 
     render inertia: "Subreddit/Index", layout: "application", props: {
@@ -37,4 +43,9 @@ class SubredditController < ApplicationController
   def update ;end;
   def edit; end
   def destroy ;end
+
+  private
+  def subreddit_params
+    params.require(:subreddit).permit(:name, :user_id)
+  end
 end
