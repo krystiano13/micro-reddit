@@ -8,4 +8,5 @@ Rails.application.routes.draw do
   root "home#index"
 
   get "/subreddits", to: "subreddit#index"
+  get "/subreddits/:id", to: "subreddit#show"
 end

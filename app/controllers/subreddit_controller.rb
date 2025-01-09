@@ -13,7 +13,21 @@ class SubredditController < ApplicationController
     }
   end
 
-  def show ;end
+  def show
+    id = params[:id]
+    subreddit = nil
+
+    if id
+      subreddit = Subreddit.find(id)
+    end
+
+    if id and subreddit
+      render inertia: "Subreddit/Show", layout: "application"
+    else
+      render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+    end
+  end
+
   def create ;end
   def new ;end
   def update ;end;
