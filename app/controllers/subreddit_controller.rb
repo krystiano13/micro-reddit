@@ -59,7 +59,13 @@ class SubredditController < ApplicationController
     unless subreddit.present?
       return redirect_to subreddit_edit_path, inertia: {
         errors: [ "Subreddit not found" ]
-      }, status: :not_found
+      }
+    end
+
+    if current_user.id != subreddit.user_id
+      return redirect_to subreddit_edit_path, inertia: {
+        errors: ["Access Denied"]
+      }
     end
 
     if subreddit.update(params.require(:subreddit).permit(:name))
@@ -68,9 +74,9 @@ class SubredditController < ApplicationController
       }
     end
 
-    return redirect_to subreddit_edit_path, inertia: {
+    redirect_to subreddit_edit_path, inertia: {
       errors: subreddit.errors.full_messages
-    }, status: :unprocessable_content
+    }
   end
 
   def edit
@@ -78,6 +84,10 @@ class SubredditController < ApplicationController
 
     unless subreddit.present?
       return render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+    end
+
+    if current_user.id != subreddit.user_id
+      return redirect_to subreddits_path
     end
 
     render inertia: "Subreddit/Edit", layout: "application", props: {
