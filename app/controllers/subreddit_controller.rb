@@ -1,4 +1,5 @@
 class SubredditController < ApplicationController
+  before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
   def index
     search = params[:search]
     page = 0

@@ -1,4 +1,4 @@
-import { router } from "@inertiajs/react";
+import { router, Link } from "@inertiajs/react";
 import { AppShell, Title, Input, Burger, useMantineColorScheme } from '@mantine/core'
 import { Button, Card, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -74,6 +74,9 @@ export function Navigation({ children, user }: Props) {
             <AppShell.Navbar>
                 <Nav>
                     <section style={{ display: "flex", flexDirection: "column",gap: "1rem" }}>
+                        <Link href="/subreddits">
+                            <Button variant="light">Subreddits</Button>
+                        </Link>
                         {
                             !user &&
                             <>
@@ -87,11 +90,13 @@ export function Navigation({ children, user }: Props) {
                         }
                         {
                             user &&
-                            <Button onClick={() => {
-                                router.delete("/users/sign_out");
-                            }}>
-                                Log Out
-                            </Button>
+                            <>
+                                <Button onClick={() => {
+                                    router.delete("/users/sign_out");
+                                }}>
+                                    Log Out
+                                </Button>
+                            </>
                         }
                     </section>
                     <Card>
