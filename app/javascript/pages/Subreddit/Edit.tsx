@@ -16,12 +16,11 @@ const Main = styled.main`
 export default function Edit({ user, errors, id, subreddit }: { user: any, subreddit: any }) {
     const [values, setValues] = useState({
         name: subreddit.name,
-        user_id: user.id
     });
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        await router.patch(`/subreddits/${id}/edit`, values);
+        await router.patch(`/subreddits/${id}`, values);
     }
 
     return (
@@ -29,7 +28,7 @@ export default function Edit({ user, errors, id, subreddit }: { user: any, subre
             <Head title="REDDIT:RE" />
             <Main>
                 <Card style={{ display: "flex", flexDirection: "column", gap: "1rem", padding: "2rem" }}>
-                    <Title>Create New Subreddit</Title>
+                    <Title>Edit Subreddit's name</Title>
                     <form
                         onSubmit={handleSubmit}
                         style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
@@ -43,7 +42,7 @@ export default function Edit({ user, errors, id, subreddit }: { user: any, subre
                             name="name"
                         />
                         <Button type="submit">
-                            Create
+                            Update
                         </Button>
                     </form>
                     {

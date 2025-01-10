@@ -10,7 +10,8 @@ Rails.application.routes.draw do
   get "/subreddits", to: "subreddit#index", as: :subreddits
   get "/subreddits/new", to: "subreddit#new", as: :subreddit_new
   get "/subreddits/:id", to: "subreddit#show"
-  get "/subreddits/:id/edit", to: "subreddit#edit"
+  get "/subreddits/:id/edit", to: "subreddit#edit", as: :subreddit_edit
 
   post "/subreddits", to: "subreddit#create"
+  patch "/subreddits/:id", to: "subreddit#update"
 end

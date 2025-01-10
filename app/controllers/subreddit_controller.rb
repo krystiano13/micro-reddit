@@ -53,7 +53,25 @@ class SubredditController < ApplicationController
     render inertia: "Subreddit/New", layout: "application"
   end
 
-  def update ;end;
+  def update
+    subreddit = Subreddit.find(params[:id])
+
+    unless subreddit.present?
+      return redirect_to subreddit_edit_path, inertia: {
+        errors: [ "Subreddit not found" ]
+      }, status: :not_found
+    end
+
+    if subreddit.update(params.require(:subreddit).permit(:name))
+      return redirect_to subreddits_path, inertia: {
+        notice: 'Subreddit updated!'
+      }
+    end
+
+    return redirect_to subreddit_edit_path, inertia: {
+      errors: subreddit.errors.full_messages
+    }, status: :unprocessable_content
+  end
 
   def edit
     subreddit = Subreddit.find(params[:id])
