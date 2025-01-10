@@ -13,7 +13,7 @@ const Main = styled.main`
     align-items: center;
 `;
 
-export default function New({ user }: { user: any, subreddits: any }) {
+export default function New({ user, errors }: { user: any, subreddits: any }) {
     const [values, setValues] = useState({
         name: "",
         user_id: user.id
@@ -46,6 +46,11 @@ export default function New({ user }: { user: any, subreddits: any }) {
                             Create
                         </Button>
                     </form>
+                    {
+                        errors && errors.map(item => (
+                            <p className="error">{ item }</p>
+                        ))
+                    }
                 </Card>
             </Main>
         </Navigation>
