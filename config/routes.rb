@@ -15,4 +15,7 @@ Rails.application.routes.draw do
   post "/subreddits", to: "subreddit#create"
   patch "/subreddits/:id", to: "subreddit#update"
   delete "/subreddits/:id", to: "subreddit#destroy"
+
+  post "/subreddit_followers", to: "subreddit_followers#create", as: :subreddit_followers_create
+  delete "/subreddit_followers/:id", to: "subreddit_followers#destroy", as: :subreddit_follower_destroy
 end

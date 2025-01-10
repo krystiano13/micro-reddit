@@ -1,0 +1,2 @@
+module SubredditFollowerHelper
+end
