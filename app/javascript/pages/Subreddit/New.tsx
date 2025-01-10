@@ -21,7 +21,7 @@ export default function New({ user }: { user: any, subreddits: any }) {
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        //TODO: Saving Subreddit in DB or handle errors
+        await router.post("/subreddits", values);
     }
 
     return (
@@ -30,12 +30,16 @@ export default function New({ user }: { user: any, subreddits: any }) {
             <Main>
                 <Card style={{ display: "flex", flexDirection: "column", gap: "1rem", padding: "2rem" }}>
                     <Title>Create New Subreddit</Title>
-                    <form style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    <form
+                        onSubmit={handleSubmit}
+                        style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
+                    >
                         <Input
                             type="text"
                             placeholder="Subreddit Name"
                             required
                             value={values.name}
+                            onChange={(e) => setValues({...values, name: e.target.value})}
                             name="name"
                         />
                         <Button type="submit">

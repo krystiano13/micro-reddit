@@ -7,8 +7,10 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   root "home#index"
 
-  get "/subreddits", to: "subreddit#index"
-  get "/subreddits/new", to: "subreddit#new"
+  get "/subreddits", to: "subreddit#index", as: :subreddits
+  get "/subreddits/new", to: "subreddit#new", as: :subreddit_new
   get "/subreddits/:id", to: "subreddit#show"
   get "/subreddits/:id/edit", to: "subreddit#edit"
+
+  post "/subreddits", to: "subreddit#create"
 end

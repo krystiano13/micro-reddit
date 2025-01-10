@@ -35,7 +35,19 @@ class SubredditController < ApplicationController
     end
   end
 
-  def create ;end
+  def create
+    new_subreddt = Subreddit.create(subreddit_params)
+
+    if new_subreddt.save
+      return redirect_to subreddits_path, inertia: {
+        notice: 'Subreddit created!'
+      }
+    end
+
+    return redirect_to subreddit_new_path, inertia: {
+      errors: new_subreddt.errors.full_messages
+    }
+  end
 
   def new
     render inertia: "Subreddit/New", layout: "application"
