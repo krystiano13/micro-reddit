@@ -56,7 +56,16 @@ class SubredditController < ApplicationController
   def update ;end;
 
   def edit
-    render inertia: "Subreddit/Edit", layout: "application"
+    subreddit = Subreddit.find(params[:id])
+
+    unless subreddit.present?
+      return render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+    end
+
+    render inertia: "Subreddit/Edit", layout: "application", props: {
+      id: params[:id],
+      subreddit: subreddit
+    }
   end
 
   def destroy ;end
