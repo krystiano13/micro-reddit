@@ -29,7 +29,10 @@ class SubredditController < ApplicationController
     end
 
     if id and subreddit
-      render inertia: "Subreddit/Show", layout: "application"
+      render inertia: "Subreddit/Show", layout: "application", props: {
+        id: params[:id],
+        subreddit:
+      }
     else
       render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
     end
@@ -96,7 +99,18 @@ class SubredditController < ApplicationController
     }
   end
 
-  def destroy ;end
+  def destroy
+    subreddit = Subreddit.find(params[:id])
+
+    if subreddit.present?
+      if current_user.id == subreddit.user_id
+        Post.where(subreddit_id: subreddit.id).destroy_all
+        subreddit.destroy
+      end
+    end
+
+    redirect_to subreddits_path
+  end
 
   private
   def subreddit_params
