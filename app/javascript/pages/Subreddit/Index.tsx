@@ -43,6 +43,9 @@ export default function Index({ user, subreddits, search }: { user: any, subredd
     const [searchValue, setSearchValue] = useState<string>(search ? search : "");
     const [firstRender, setFirstRender] = useState<boolean>(true);
 
+    const [yourSubreddits, setYourSubreddits] = useState<boolean>(false);
+    const [followedSubreddits, setFollowedSubreddits] = useState<boolean>(false);
+
     useEffect(() => {
         const timeout = setTimeout(() => {
             if(!firstRender) {
@@ -57,6 +60,18 @@ export default function Index({ user, subreddits, search }: { user: any, subredd
             clearTimeout(timeout)
         }
     }, [searchValue]);
+
+    useEffect(() => {
+        if(yourSubreddits) {
+            setFollowedSubreddits(false)
+        }
+    }, [yourSubreddits]);
+
+    useEffect(() => {
+        if(followedSubreddits) {
+            setYourSubreddits(false)
+        }
+    }, [followedSubreddits]);
 
     return (
         <Navigation user={user}>
@@ -73,10 +88,16 @@ export default function Index({ user, subreddits, search }: { user: any, subredd
                         placeholder="Search for subreddits"
                     />
                     <section>
-                        <Button>
+                        <Button
+                            onClick={() => setYourSubreddits(prev => !prev)}
+                            variant={yourSubreddits ? "filled" : "light"}
+                        >
                             Your Subreddits
                         </Button>
-                        <Button>
+                        <Button
+                            onClick={() => setFollowedSubreddits(prev => !prev)}
+                            variant={followedSubreddits ? "filled" : "light"}
+                        >
                             Followed Subreddits
                         </Button>
                     </section>
