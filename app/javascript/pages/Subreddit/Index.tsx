@@ -49,7 +49,7 @@ export default function Index({ user, subreddits, search }: { user: any, subredd
     useEffect(() => {
         const timeout = setTimeout(() => {
             if(!firstRender) {
-                router.get(`/subreddits?search=${searchValue}`)
+                router.get(`/subreddits?search=${searchValue}${yourSubreddits ? "&your=1" : ""}${followedSubreddits ? "&follow=1" : ""}`)
             }
             else {
                 setFirstRender(false)
@@ -59,7 +59,7 @@ export default function Index({ user, subreddits, search }: { user: any, subredd
         return () => {
             clearTimeout(timeout)
         }
-    }, [searchValue]);
+    }, [searchValue, yourSubreddits, followedSubreddits]);
 
     useEffect(() => {
         if(yourSubreddits) {
