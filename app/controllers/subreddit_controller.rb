@@ -1,10 +1,14 @@
 class SubredditController < ApplicationController
   before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
   def index
-    search = params[:search]
+    search = ""
     page = 0
 
     subreddits = []
+
+    if params[:search]
+      search = params[:search]
+    end
 
     if params[:page]
       page = params[:page]
