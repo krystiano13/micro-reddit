@@ -91,6 +91,11 @@ export function Navigation({ children, user }: Props) {
                         {
                             user &&
                             <>
+                                <Button variant="light" onClick={() => {
+                                    router.get("/subreddits/new");
+                                }}>
+                                    Create Subreddit
+                                </Button>
                                 <Button onClick={() => {
                                     router.delete("/users/sign_out");
                                 }}>
