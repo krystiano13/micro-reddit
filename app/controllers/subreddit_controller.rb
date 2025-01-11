@@ -23,15 +23,21 @@ class SubredditController < ApplicationController
   def show
     id = params[:id]
     subreddit = nil
+    subreddit_follower = nil
 
     if id
       subreddit = Subreddit.find(id)
     end
 
+    if current_user and subreddit.present?
+      subreddit_follower = Subreddit.find_by(subreddit_id: id, user_id: current_user.id)
+    end
+
     if id and subreddit
       render inertia: "Subreddit/Show", layout: "application", props: {
         id: params[:id],
-        subreddit:
+        subreddit:,
+        subreddit_follower:
       }
     else
       render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
