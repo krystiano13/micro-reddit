@@ -20,7 +20,7 @@ export default function Show({ user, subreddit, id, subreddit_follower }: { user
             <Head title="REDDIT:RE" />
             <Title>{ subreddit.name }</Title>
             {
-                user && <>
+                user && (subreddit.user_id !== user.id) && <>
                     {
                         subreddit_follower ?
                             <Button
