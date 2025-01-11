@@ -12,6 +12,18 @@ br {
     clear:none;
 }
 
+.filter-input {
+    width: 70%;
+
+    @media screen and (max-width: 639px) {
+        width: 100%;
+    }
+
+    input {
+        width: 100%;
+    }
+}
+
 .error {
     margin: 0;
     text-align: center;
