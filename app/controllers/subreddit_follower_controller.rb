@@ -1,4 +1,5 @@
 class SubredditFollowerController < ApplicationController
+  before_action :authenticate_user!
   def create
     subreddit_follower = SubredditFollower.create(
       subreddit_id: params[:subreddit_id],

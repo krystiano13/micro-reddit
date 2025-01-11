@@ -30,7 +30,7 @@ class SubredditController < ApplicationController
     end
 
     if current_user and subreddit.present?
-      subreddit_follower = Subreddit.find_by(subreddit_id: id, user_id: current_user.id)
+      subreddit_follower = SubredditFollower.find_by(subreddit_id: id, user_id: current_user.id)
     end
 
     if id and subreddit
