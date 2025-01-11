@@ -12,6 +12,8 @@ class SubredditController < ApplicationController
 
     if search
       subreddits = Subreddit.where("name like ?", "%#{search}%").limit(10).offset(page * 10)
+    else
+      subreddits = Subreddit.order(created_at: :desc).limit(10).offset(page * 10)
     end
 
     render inertia: "Subreddit/Index", layout: "application", props: {
