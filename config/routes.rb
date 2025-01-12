@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   root "home#index"
 
   resources :post
+  get "/post/new/:subreddit_id" => "post#new", as: :post_new
+  post "/post/new/:subreddit_id" => "post#create"
+
   resources :subreddit
 
   post "/subreddit_followers/:subreddit_id", to: "subreddit_follower#create", as: :subreddit_followers_create
