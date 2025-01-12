@@ -7,14 +7,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
   root "home#index"
 
-  get "/subreddits", to: "subreddit#index", as: :subreddits
-  get "/subreddits/new", to: "subreddit#new", as: :subreddit_new
-  get "/subreddits/:id", to: "subreddit#show"
-  get "/subreddits/:id/edit", to: "subreddit#edit", as: :subreddit_edit
-
-  post "/subreddits", to: "subreddit#create"
-  patch "/subreddits/:id", to: "subreddit#update"
-  delete "/subreddits/:id", to: "subreddit#destroy"
+  resources :post
+  resources :subreddit
 
   post "/subreddit_followers/:subreddit_id", to: "subreddit_follower#create", as: :subreddit_followers_create
   delete "/subreddit_followers/:id", to: "subreddit_follower#destroy", as: :subreddit_follower_destroy

@@ -15,7 +15,9 @@ class Subreddit < ApplicationRecord
   private
   def decrement_counter
     last_subreddit = Subreddit.last
-    last_subreddit.count -= 1 if last_subreddit
-    last_subreddit.save
+    if last_subreddit and last_subreddit.count > 1
+      last_subreddit.count -= 1 if last_subreddit
+      last_subreddit.save
+    end
   end
 end

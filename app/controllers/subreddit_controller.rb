@@ -48,21 +48,21 @@ class SubredditController < ApplicationController
 
   def show
     id = params[:id]
-    subreddit = nil
+    @subreddit = nil
     subreddit_follower = nil
 
     if id
-      subreddit = Subreddit.find(id)
+      @subreddit = Subreddit.find(id)
     end
 
-    if current_user and subreddit.present?
+    if current_user and @subreddit.present?
       subreddit_follower = SubredditFollower.find_by(subreddit_id: id, user_id: current_user.id)
     end
 
-    if id and subreddit
+    if id and @subreddit
       render inertia: "Subreddit/Show", layout: "application", props: {
         id: params[:id],
-        subreddit:,
+        subreddit: @subreddit,
         subreddit_follower:
       }
     else
@@ -71,16 +71,16 @@ class SubredditController < ApplicationController
   end
 
   def create
-    new_subreddt = Subreddit.create(subreddit_params)
+    @new_subreddt = Subreddit.create(subreddit_params)
 
-    if new_subreddt.save
-      return redirect_to subreddits_path, inertia: {
+    if @new_subreddt.save
+      return redirect_to subreddit_index_path, inertia: {
         notice: 'Subreddit created!'
       }
     end
 
-    return redirect_to subreddit_new_path, inertia: {
-      errors: new_subreddt.errors.full_messages
+    return redirect_to new_subreddit_path, inertia: {
+      errors: @new_subreddt.errors.full_messages
     }
   end
 
@@ -89,59 +89,59 @@ class SubredditController < ApplicationController
   end
 
   def update
-    subreddit = Subreddit.find(params[:id])
+    @subreddit = Subreddit.find(params[:id])
 
-    unless subreddit.present?
-      return redirect_to subreddit_edit_path, inertia: {
+    unless @subreddit.present?
+      return redirect_to edit_subreddit_path, inertia: {
         errors: [ "Subreddit not found" ]
       }
     end
 
-    if current_user.id != subreddit.user_id
-      return redirect_to subreddit_edit_path, inertia: {
+    if current_user.id != @subreddit.user_id
+      return redirect_to edit_subreddit_path, inertia: {
         errors: ["Access Denied"]
       }
     end
 
-    if subreddit.update(params.require(:subreddit).permit(:name))
-      return redirect_to subreddits_path, inertia: {
+    if @subreddit.update(params.require(:subreddit).permit(:name))
+      return redirect_to subreddit_index_path, inertia: {
         notice: 'Subreddit updated!'
       }
     end
 
-    redirect_to subreddit_edit_path, inertia: {
-      errors: subreddit.errors.full_messages
+    redirect_to edit_subreddit_path, inertia: {
+      errors: @subreddit.errors.full_messages
     }
   end
 
   def edit
-    subreddit = Subreddit.find(params[:id])
+    @subreddit = Subreddit.find(params[:id])
 
-    unless subreddit.present?
+    unless @subreddit.present?
       return render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
     end
 
-    if current_user.id != subreddit.user_id
-      return redirect_to subreddits_path
+    if current_user.id != @subreddit.user_id
+      return redirect_to subreddit_index_path
     end
 
     render inertia: "Subreddit/Edit", layout: "application", props: {
       id: params[:id],
-      subreddit: subreddit
+      subreddit: @subreddit
     }
   end
 
   def destroy
-    subreddit = Subreddit.find(params[:id])
+    @subreddit = Subreddit.find(params[:id])
 
-    if subreddit.present?
-      if current_user.id == subreddit.user_id
-        Post.where(subreddit_id: subreddit.id).destroy_all
-        subreddit.destroy
+    if @subreddit.present?
+      if current_user.id == @subreddit.user_id
+        Post.where(subreddit_id: @subreddit.id).destroy_all
+        @subreddit.destroy
       end
     end
 
-    redirect_to subreddits_path
+    redirect_to subreddit_index_path
   end
 
   private

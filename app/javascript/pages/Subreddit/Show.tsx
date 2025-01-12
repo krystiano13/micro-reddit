@@ -4,7 +4,7 @@ import { Title, Button } from "@mantine/core";
 
 export default function Show({ user, subreddit, id, subreddit_follower }: { user: any, subreddit: any, id: any }) {
     async function deleteSubreddit() {
-        await router.delete(`/subreddits/${id}`);
+        await router.delete(`/subreddit/${id}`);
     }
 
     async function unfollowSubreddit() {

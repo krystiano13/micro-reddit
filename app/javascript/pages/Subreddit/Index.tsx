@@ -61,7 +61,7 @@ export default function Index({ user, subreddits, search, your, follow }: Props)
     useEffect(() => {
         const timeout = setTimeout(() => {
             if(!firstRender) {
-                router.get(`/subreddits?search=${searchValue}${yourSubreddits ? "&your=1" : ""}${followedSubreddits ? "&follow=1" : ""}`)
+                router.get(`/subreddit?search=${searchValue}${yourSubreddits ? "&your=1" : ""}${followedSubreddits ? "&follow=1" : ""}`)
             }
             else {
                 setFirstRender(false)
@@ -118,7 +118,7 @@ export default function Index({ user, subreddits, search, your, follow }: Props)
                     subreddits && subreddits.map(item => (
                         <Link
                             style={{ textDecoration: "none" }}
-                            href={`/subreddits/${item.id}`}
+                            href={`/subreddit/${item.id}`}
                         >
                             <Card>
                                 <Title>{ item.name }</Title>

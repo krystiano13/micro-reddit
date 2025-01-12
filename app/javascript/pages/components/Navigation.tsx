@@ -74,7 +74,7 @@ export function Navigation({ children, user }: Props) {
             <AppShell.Navbar>
                 <Nav>
                     <section style={{ display: "flex", flexDirection: "column",gap: "1rem" }}>
-                        <Link href="/subreddits">
+                        <Link href="/subreddit">
                             <Button variant="light">Subreddits</Button>
                         </Link>
                         {
@@ -92,7 +92,7 @@ export function Navigation({ children, user }: Props) {
                             user &&
                             <>
                                 <Button variant="light" onClick={() => {
-                                    router.get("/subreddits/new");
+                                    router.get("/subreddit/new");
                                 }}>
                                     Create Subreddit
                                 </Button>

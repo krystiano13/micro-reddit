@@ -21,7 +21,7 @@ export default function New({ user, errors }: { user: any, subreddits: any }) {
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        await router.post("/subreddits", values);
+        await router.post("/subreddit", values);
     }
 
     return (

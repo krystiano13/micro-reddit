@@ -20,7 +20,7 @@ export default function Edit({ user, errors, id, subreddit }: { user: any, subre
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        await router.patch(`/subreddits/${id}`, values);
+        await router.patch(`/subreddit/${id}`, values);
     }
 
     return (
