@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { Editor, Transforms, Text } from "slate";
 import { Editable } from "slate-react";
-import { useState } from "react";
 
 import { IconButton } from "@mui/material";
 import {
@@ -17,7 +16,8 @@ const Leaf = (props) => {
             style={{
                 fontWeight: props.leaf.bold ? "bold" : "normal",
                 fontStyle: props.leaf.italic ? "italic" : "normal",
-                textDecoration: props.leaf.underline ? "underline" : "none"
+                textDecoration: props.leaf.underline ? "underline" : "none",
+                fontSize: props.leaf.h1 ? "1.75rem" : props.leaf.h2 ? "1.4rem" : "1rem"
             }}
         >
       {props.children}
@@ -26,10 +26,6 @@ const Leaf = (props) => {
 };
 
 function TextEditor({ editor }) {
-    const [bold, setBold] = useState<boolean>(false);
-    const [italic, setItalic] = useState<boolean>(false);
-    const [underline, setUnderline] = useState<boolean>(false);
-
     function changeMark(mark) {
         const [match] = Editor.nodes(editor, {
             match: (n) => n[mark]
@@ -66,6 +62,17 @@ function TextEditor({ editor }) {
                 changeMark("underline");
                 break;
             }
+
+            case "h": {
+                changeMark("h1");
+                break;
+            }
+
+            case "f": {
+                changeMark("h1");
+                break;
+            }
+
             default: {
                 break;
             }
@@ -82,30 +89,43 @@ function TextEditor({ editor }) {
                 height: "40rem"
             }}
         >
-            <div style={{display: `flex`, backgroundColor: "#1f1f1f", marginBottom: "1rem", padding: ".5rem", gap: ".5rem"}}>
+            <div style={{display: `flex`, backgroundColor: "#1f1f1f", marginBottom: "1rem"}}>
                 <IconButton
-                    style={{ color: bold ? "white" : "grey", backgroundColor: bold ? "rgb(37, 116, 189)" : "transparent" }}
+                    style={{ color: "grey" }}
+                    onPointerDown={(e) => {
+                        changeMark("h1");
+                    }}
+                >
+                    <span style={{ fontSize: "1rem" }}>H1</span>
+                </IconButton>
+                <IconButton
+                    style={{ color: "grey" }}
+                    onPointerDown={(e) => {
+                        changeMark("h2");
+                    }}
+                >
+                    <span style={{ fontSize: "1rem" }}>H2</span>
+                </IconButton>
+                <IconButton
+                    style={{ color: "grey" }}
                     onPointerDown={(e) => {
                         changeMark("bold");
-                        setBold(prev => !prev);
                     }}
                 >
                     <FormatBold />
                 </IconButton>
                 <IconButton
-                    style={{ color: italic ? "white" : "grey", backgroundColor: italic ? "rgb(37, 116, 189)" : "transparent" }}
+                    style={{ color: "grey" }}
                     onPointerDown={(e) => {
                         changeMark("italic");
-                        setItalic(prev => !prev);
                     }}
                 >
                     <FormatItalic />
                 </IconButton>
                 <IconButton
-                    style={{ color: underline ? "white" : "grey", backgroundColor: underline ? "rgb(37, 116, 189)" : "transparent" }}
+                    style={{ color: "grey" }}
                     onPointerDown={(e) => {
                         changeMark("underline");
-                        setUnderline(prev => !prev);
                     }}
                 >
                     <FormatUnderlined />
