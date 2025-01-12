@@ -39,12 +39,24 @@ const Filters = styled.div`
     }
 `;
 
-export default function Index({ user, subreddits, search }: { user: any, subreddits: any, search: string }) {
+interface Props {
+    user: {
+        id: number
+        email: string
+        name: string
+    } | null,
+    subreddits: any[],
+    search: string | null,
+    your: any | null,
+    follow: any | null
+}
+
+export default function Index({ user, subreddits, search, your, follow }: Props) {
     const [searchValue, setSearchValue] = useState<string>(search ? search : "");
     const [firstRender, setFirstRender] = useState<boolean>(true);
 
-    const [yourSubreddits, setYourSubreddits] = useState<boolean>(false);
-    const [followedSubreddits, setFollowedSubreddits] = useState<boolean>(false);
+    const [yourSubreddits, setYourSubreddits] = useState<boolean>(your ? true : false);
+    const [followedSubreddits, setFollowedSubreddits] = useState<boolean>(follow ? true : false);
 
     useEffect(() => {
         const timeout = setTimeout(() => {

@@ -14,15 +14,35 @@ class SubredditController < ApplicationController
       page = params[:page]
     end
 
-    if search
-      subreddits = Subreddit.where("name like ?", "%#{search}%").limit(10).offset(page * 10)
-    else
-      subreddits = Subreddit.order(created_at: :desc).limit(10).offset(page * 10)
+    unless params[:your] or params[:follow]
+      if search
+        subreddits = Subreddit.where("name like ?", "%#{search}%").limit(10).offset(page * 10)
+      else
+        subreddits = Subreddit.order(created_at: :desc).limit(10).offset(page * 10)
+      end
+    end
+
+    if params[:your]
+      if search
+        subreddits = Subreddit.where("name like ?", "%#{search}%").where(user_id: current_user.id).limit(10).offset(page * 10)
+      else
+        subreddits = Subreddit.order(created_at: :desc).where(user_id: current_user.id).limit(10).offset(page * 10)
+      end
+    end
+
+    if params[:follow]
+      if search
+        subreddits = Subreddit.where("name like ?", "%#{search}%").limit(10).offset(page * 10)
+      else
+        subreddits = Subreddit.order(created_at: :desc).limit(10).offset(page * 10)
+      end
     end
 
     render inertia: "Subreddit/Index", layout: "application", props: {
       subreddits:,
-      search:
+      search:,
+      follow: params[:follow],
+      your: params[:your],
     }
   end
 
