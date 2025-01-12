@@ -81,31 +81,23 @@ function TextEditor({ editor }) {
     return (
         <div
             style={{
-                backgroundColor: "#171718",
                 color: "#fff",
                 textAlign: "start",
                 padding: "10px",
                 width: "30rem",
-                height: "40rem"
+                height: "35rem",
+                backgroundColor: 'rgb(46, 46, 46)',
+                border: '1px solid #424242',
+                borderRadius:'4px'
             }}
         >
-            <div style={{display: `flex`, backgroundColor: "#1f1f1f", marginBottom: "1rem"}}>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("h1");
-                    }}
-                >
-                    <span style={{ fontSize: "1rem" }}>H1</span>
-                </IconButton>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("h2");
-                    }}
-                >
-                    <span style={{ fontSize: "1rem" }}>H2</span>
-                </IconButton>
+            <div style={{
+                display: `flex`,
+                backgroundColor: 'rgb(46, 46, 46)',
+                border: '1px solid #424242',
+                borderRadius:'4px',
+                marginBottom: "1rem"
+            }}>
                 <IconButton
                     style={{ color: "grey" }}
                     onPointerDown={(e) => {
@@ -129,6 +121,22 @@ function TextEditor({ editor }) {
                     }}
                 >
                     <FormatUnderlined />
+                </IconButton>
+                <IconButton
+                    style={{ color: "grey" }}
+                    onPointerDown={(e) => {
+                        changeMark("h1");
+                    }}
+                >
+                    <b style={{ fontSize: "1rem" }}>H1</b>
+                </IconButton>
+                <IconButton
+                    style={{ color: "grey" }}
+                    onPointerDown={(e) => {
+                        changeMark("h2");
+                    }}
+                >
+                    <b style={{ fontSize: "1rem" }}>H2</b>
                 </IconButton>
             </div>
             <Editable
