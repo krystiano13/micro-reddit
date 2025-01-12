@@ -2,19 +2,25 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "@types/draft-js": "^0.11.18",
     "vite": "^5.4.11",
     "vite-plugin-ruby": "^5.1.1"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@inertiajs/react": "^2.0.0",
     "@mantine/core": "^7.15.2",
     "@mantine/hooks": "^7.15.2",
+    "@mui/icons-material": "^6.3.1",
+    "@mui/material": "^6.3.1",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
     "@vitejs/plugin-react": "^4.3.4",
-    "draft-js": "^0.11.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "slate": "^0.112.0",
+    "slate-react": "^0.112.0",
     "styled-components": "^6.1.14",
     "typescript": "^5.7.2"
   },
