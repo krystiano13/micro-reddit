@@ -32,11 +32,35 @@ class PostController < ApplicationController
   end
 
   def edit
+    @post = Post.find(params[:id])
 
+    if @post.present?
+      return render inertia: "Post/Edit", layout: "application", props: {
+        post: @post
+      }
+    end
+
+    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 
   def update
+    @post = Post.find(params[:id])
 
+    if @post.present?
+      if @post.update(post_params)
+        return redirect_to subreddit_url(id: @post.subreddit_id), inertia: {
+          notice: "Post successfully updated"
+        }
+      else
+        return redirect_to edit_post_path(id: @post.id), inertia: {
+          errors: @post.errors.full_messages
+        }
+      end
+    end
+
+    redirect_to subreddit_url(id: @post.subreddit_id), inertia: {
+      notice: "Post successfully updated"
+    }
   end
 
   def destroy

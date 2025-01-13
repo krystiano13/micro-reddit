@@ -1,6 +1,6 @@
 import { Head, router } from '@inertiajs/react'
 import { Navigation } from "../components/Navigation.tsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
 import { createEditor } from 'slate'
 import { withReact } from 'slate-react'
@@ -20,15 +20,20 @@ declare module 'slate' {
     }
 }
 
-export default function New({ user, subreddit_id }: { user: any }) {
+export default function Edit({ user, post }: { user: any }) {
     const [editor] = useState(() => withReact(createEditor()))
-    const [title, setTitle] = useState<string>("");
+    const [title, setTitle] = useState<string>(post.title ? post.title : "");
 
-    async function createPost(e: FormEvent) {
+    useEffect(() => {
+        if(post.body) {
+            editor.children = JSON.parse(post.body);
+        }
+    }, []);
+
+    async function updatePost(e: FormEvent) {
         e.preventDefault();
-        router.post(`/post/new/${subreddit_id}`, {
+        router.patch(`/post/${post.id}`, {
             title: title,
-            subreddit_id: subreddit_id,
             body: JSON.stringify(editor.children)
         })
     }
@@ -40,7 +45,7 @@ export default function New({ user, subreddit_id }: { user: any }) {
                 editor={editor}
                 title={title}
                 setTitle={(value:string) => setTitle(value)}
-                submit={(e) => createPost(e)}
+                submit={(e) => updatePost(e)}
             />
         </Navigation>
     )
