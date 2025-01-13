@@ -11,7 +11,9 @@ class PostController < ApplicationController
   end
 
   def new
-    render inertia: "Post/New", layout: "application"
+    render inertia: "Post/New", layout: "application", props: {
+      subreddit_id: params[:subreddit_id]
+    }
   end
 
   def create
@@ -43,7 +45,7 @@ class PostController < ApplicationController
 
   private
   def post_params
-    params.require(:post).permit(:title, :content, :subreddit_id)
+    params.require(:post).permit(:title, :body, :subreddit_id)
   end
 
   private
