@@ -18,7 +18,15 @@ class PostController < ApplicationController
   end
 
   def show
+    @post = Post.find(params[:id])
 
+    if @post.present?
+      return render inertia "Post/Show", layout: "application", props: {
+        post: @post
+      }
+    end
+
+    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 
   def new
