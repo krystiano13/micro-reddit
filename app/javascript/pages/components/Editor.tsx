@@ -24,9 +24,10 @@ interface Props {
     submit: (e: FormEvent) => void,
     title: string,
     setTitle: (value:string) => void
+    errors: string[]
 }
 
-export function Editor({ editor, submit, title, setTitle }: Props) {
+export function Editor({ editor, submit, title, setTitle, errors }: Props) {
     return (
         <EditorWrapper>
             <Card style={{ padding: "2rem" }}>
@@ -44,8 +45,13 @@ export function Editor({ editor, submit, title, setTitle }: Props) {
                     <Button
                         type="submit"
                     >
-                        Create Post
+                        Submit
                     </Button>
+                    {
+                        errors && errors.map(item => (
+                            <p className="error">{ item }</p>
+                        ))
+                    }
                 </form>
             </Card>
         </EditorWrapper>

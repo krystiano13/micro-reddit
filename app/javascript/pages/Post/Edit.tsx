@@ -20,7 +20,7 @@ declare module 'slate' {
     }
 }
 
-export default function Edit({ user, post }: { user: any }) {
+export default function Edit({ user, post, errors }: { user: any }) {
     const [editor] = useState(() => withReact(createEditor()))
     const [title, setTitle] = useState<string>(post.title ? post.title : "");
 
@@ -46,6 +46,7 @@ export default function Edit({ user, post }: { user: any }) {
                 title={title}
                 setTitle={(value:string) => setTitle(value)}
                 submit={(e) => updatePost(e)}
+                errors={errors}
             />
         </Navigation>
     )

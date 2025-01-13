@@ -20,7 +20,7 @@ declare module 'slate' {
     }
 }
 
-export default function New({ user, subreddit_id }: { user: any }) {
+export default function New({ user, subreddit_id, errors }: { user: any }) {
     const [editor] = useState(() => withReact(createEditor()))
     const [title, setTitle] = useState<string>("");
 
@@ -41,6 +41,7 @@ export default function New({ user, subreddit_id }: { user: any }) {
                 title={title}
                 setTitle={(value:string) => setTitle(value)}
                 submit={(e) => createPost(e)}
+                errors={errors}
             />
         </Navigation>
     )
