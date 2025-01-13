@@ -3,7 +3,18 @@ class PostController < ApplicationController
   before_action :redirect_if_no_follow, only: [ :new ]
 
   def index
+    page = 0
+    search = nil
 
+    if params[:page]
+      page = params[:page]
+    end
+
+    @posts = Post.all.limit(10).offset(page * 10).order(created_at: :desc)
+
+    render inertia "Post/Index", layout: "application", props: {
+      posts: @posts
+    }
   end
 
   def show
