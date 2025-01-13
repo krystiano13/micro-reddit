@@ -15,7 +15,18 @@ class PostController < ApplicationController
   end
 
   def create
+    @post = Post.new(post_params)
+    @post.user_id = current_user.id
 
+    if @post.save
+      redirect_to subreddit_url(id: @post.subreddit_id), inertia: {
+        notice: "Post successfully created"
+      }
+    else
+      redirect_to new_subreddit_url(id: @post.subreddit_id), inertia: {
+        errors: @post.errors.full_messages
+      }
+    end
   end
 
   def edit
@@ -28,6 +39,11 @@ class PostController < ApplicationController
 
   def destroy
 
+  end
+
+  private
+  def post_params
+    params.require(:post).permit(:title, :content, :subreddit_id)
   end
 
   private
