@@ -27,7 +27,7 @@ class PostController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = Post.joins(:user).select("posts.*, users.name AS username").find(params[:id])
 
     if @post.present?
       return render inertia: "Post/Show", layout: "application", props: {

@@ -1,19 +1,29 @@
-import { useCallback } from "react";
-import { Editor, Transforms, Text } from "slate";
-import { Editable } from "slate-react";
+import {useCallback, useEffect} from "react";
+import {Editor, Transforms, Text} from "slate";
+import {Editable} from "slate-react";
 
-import { IconButton } from "@mui/material";
+import {IconButton} from "@mui/material";
 import {
     FormatBold,
     FormatItalic,
     FormatUnderlined,
 } from "@mui/icons-material";
 
+interface LeafProps {
+    readOnly?: boolean
+}
+
 const Leaf = (props) => {
+    console.log(props);
     return (
         <span
             {...props.attributes}
-            style={{
+            style={props.readOnly ? {
+                fontWeight: props.leaf.bold ? "bold" : "normal",
+                fontStyle: props.leaf.italic ? "italic" : "normal",
+                textDecoration: props.leaf.underline ? "underline" : "none",
+                fontSize: props.leaf.h1 ? "2rem" : props.leaf.h2 ? "1.75rem" : "1.6rem"
+            } : {
                 fontWeight: props.leaf.bold ? "bold" : "normal",
                 fontStyle: props.leaf.italic ? "italic" : "normal",
                 textDecoration: props.leaf.underline ? "underline" : "none",
@@ -25,7 +35,7 @@ const Leaf = (props) => {
     );
 };
 
-function TextEditor({ editor }) {
+function TextEditor({editor, readOnly}) {
     function changeMark(mark) {
         const [match] = Editor.nodes(editor, {
             match: (n) => n[mark]
@@ -33,13 +43,13 @@ function TextEditor({ editor }) {
 
         Transforms.setNodes(
             editor,
-            { [mark]: !match },
-            { match: (n) => Text.isText(n), split: true }
+            {[mark]: !match},
+            {match: (n) => Text.isText(n), split: true}
         );
     }
 
     const renderLeaf = useCallback((props) => {
-        return <Leaf {...props} />;
+        return <Leaf readOnly={readOnly} {...props} />;
     }, []);
 
     const onKeyDown = (event) => {
@@ -78,72 +88,86 @@ function TextEditor({ editor }) {
             }
         }
     };
+
+    useEffect(() => {
+        if(readOnly) {
+            changeMark("readOnly")
+        }
+    },[]);
+
     return (
         <div
             style={{
                 color: "#fff",
                 textAlign: "start",
-                padding: "10px",
-                width: "30rem",
-                height: "35rem",
+                padding: readOnly ? "0px" : "10px",
+                marginTop: readOnly ? "1rem" : "0rem",
+                width: readOnly ? "100%" : "30rem",
+                height: readOnly ? "auto" : "35rem",
                 backgroundColor: 'rgb(46, 46, 46)',
-                border: '1px solid #424242',
-                borderRadius:'4px'
+                border: readOnly ? 'none' : '1px solid #424242',
+                borderRadius: '4px'
             }}
         >
-            <div style={{
-                display: `flex`,
-                backgroundColor: 'rgb(46, 46, 46)',
-                border: '1px solid #424242',
-                borderRadius:'4px',
-                marginBottom: "1rem"
-            }}>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("bold");
-                    }}
-                >
-                    <FormatBold />
-                </IconButton>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("italic");
-                    }}
-                >
-                    <FormatItalic />
-                </IconButton>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("underline");
-                    }}
-                >
-                    <FormatUnderlined />
-                </IconButton>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("h1");
-                    }}
-                >
-                    <b style={{ fontSize: "1rem" }}>H1</b>
-                </IconButton>
-                <IconButton
-                    style={{ color: "grey" }}
-                    onPointerDown={(e) => {
-                        changeMark("h2");
-                    }}
-                >
-                    <b style={{ fontSize: "1rem" }}>H2</b>
-                </IconButton>
-            </div>
+            {
+                !readOnly &&
+                <div style={{
+                    display: `flex`,
+                    backgroundColor: 'rgb(46, 46, 46)',
+                    border: '1px solid #424242',
+                    borderRadius: '4px',
+                    marginBottom: "1rem"
+                }}>
+                    <IconButton
+                        style={{color: "grey"}}
+                        onPointerDown={(e) => {
+                            changeMark("bold");
+                        }}
+                    >
+                        <FormatBold/>
+                    </IconButton>
+                    <IconButton
+                        style={{color: "grey"}}
+                        onPointerDown={(e) => {
+                            changeMark("italic");
+                        }}
+                    >
+                        <FormatItalic/>
+                    </IconButton>
+                    <IconButton
+                        style={{color: "grey"}}
+                        onPointerDown={(e) => {
+                            changeMark("underline");
+                        }}
+                    >
+                        <FormatUnderlined/>
+                    </IconButton>
+                    <IconButton
+                        style={{color: "grey"}}
+                        onPointerDown={(e) => {
+                            changeMark("h1");
+                        }}
+                    >
+                        <b style={{fontSize: "1rem"}}>H1</b>
+                    </IconButton>
+                    <IconButton
+                        style={{color: "grey"}}
+                        onPointerDown={(e) => {
+                            changeMark("h2");
+                        }}
+                    >
+                        <b style={{fontSize: "1rem"}}>H2</b>
+                    </IconButton>
+                </div>
+            }
             <Editable
-                style={{ outline: "none", height: "90%", overflowY: "auto" }}
+                readOnly={readOnly}
+                style={{outline: "none", height: "90%", overflowY: "auto"}}
                 onKeyDown={onKeyDown}
                 renderLeaf={renderLeaf}
             />
         </div>
-    )}
+    )
+}
+
 export default TextEditor;

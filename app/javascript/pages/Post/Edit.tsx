@@ -2,7 +2,7 @@ import { Head, router } from '@inertiajs/react'
 import { Navigation } from "../components/Navigation.tsx";
 import { useState, useEffect } from "react";
 import type { FormEvent } from "react";
-import { createEditor } from 'slate'
+import {createEditor, Transforms} from 'slate'
 import { withReact } from 'slate-react'
 import type { BaseEditor } from 'slate'
 import type { ReactEditor } from 'slate-react'
@@ -26,9 +26,9 @@ export default function Edit({ user, post, errors }: { user: any }) {
 
     useEffect(() => {
         if(post.body) {
-            editor.children = JSON.parse(post.body);
+            Transforms.insertNodes(editor, JSON.parse(post.body), { at: [0, 0] });
         }
-    }, []);
+    }, [editor, post.body]);
 
     async function updatePost(e: FormEvent) {
         e.preventDefault();

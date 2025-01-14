@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import { Navigation } from "./components/Navigation.tsx";
 import styled from "styled-components";
 import { Card, Title, Text } from "@mantine/core";
@@ -32,25 +32,27 @@ export default function Home({ user, posts }: { user: any }) {
             <Main>
                 {
                     posts.map(post => (
-                        <CardWrapper>
-                            <Card
-                                style={{
-                                    width: "100%",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    gap: ".5rem",
-                                    padding: "1.5rem",
-                                    borderRadius: "1rem"
-                                }}>
-                                <Title order={1}>{ post.title }</Title>
-                                <Text>
-                                    <b>By:</b> { post.username }
-                                </Text>
-                                <Text>
-                                    <b>Created At:</b> { moment(post.created_at).format("DD-MM-YYYY")}
-                                </Text>
-                            </Card>
-                        </CardWrapper>
+                       <Link style={{ textDecoration: "none" }} href={`/post/${post.id}`}>
+                           <CardWrapper>
+                               <Card
+                                   style={{
+                                       width: "100%",
+                                       display: "flex",
+                                       flexDirection: "column",
+                                       gap: ".5rem",
+                                       padding: "1.5rem",
+                                       borderRadius: "1rem"
+                                   }}>
+                                   <Title order={1}>{ post.title }</Title>
+                                   <Text>
+                                       <b>By:</b> { post.username }
+                                   </Text>
+                                   <Text>
+                                       <b>Created At:</b> { moment(post.created_at).format("DD-MM-YYYY")}
+                                   </Text>
+                               </Card>
+                           </CardWrapper>
+                       </Link>
                     ))
                 }
             </Main>

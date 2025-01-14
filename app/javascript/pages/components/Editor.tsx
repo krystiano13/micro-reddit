@@ -40,7 +40,7 @@ export function Editor({ editor, submit, title, setTitle, errors }: Props) {
                         onChange={(e) => setTitle(e.target.value)}
                     />
                     <Slate editor={editor} initialValue={initialValue}>
-                        <TextEditor editor={editor} />
+                        <TextEditor readOnly={false} editor={editor} />
                     </Slate>
                     <Button
                         type="submit"
