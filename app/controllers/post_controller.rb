@@ -1,6 +1,7 @@
 class PostController < ApplicationController
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :redirect_if_no_follow, only: [ :new ]
+  before_action :redirect_if_no_owner, only: [ :edit, :update, :destroy ]
 
   def index
     page = 0
@@ -72,11 +73,12 @@ class PostController < ApplicationController
       }
     end
 
-    render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+    return render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
   end
 
   def update
     @post = Post.find(params[:id])
+    redirect_if_no_owner(@post)
 
     if @post.present?
       if @post.update(post_params)
@@ -96,12 +98,20 @@ class PostController < ApplicationController
   end
 
   def destroy
-
+    @post = Post.find(params[:id])
   end
 
   private
   def post_params
     params.require(:post).permit(:title, :body, :subreddit_id)
+  end
+
+  private
+  def redirect_if_no_owner
+    @post = Post.find(params[:id])
+    if @post.user_id != current_user.id
+      return redirect_back fallback_location: root_path
+    end
   end
 
   private
