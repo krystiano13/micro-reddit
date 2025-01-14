@@ -1,6 +1,6 @@
 import { Navigation } from "../components/Navigation.tsx";
-import { Head } from "@inertiajs/react";
-import { Card, Title, Text } from "@mantine/core";
+import { Head, Link, router } from "@inertiajs/react";
+import { Card, Title, Text, Button } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { Slate, withReact } from "slate-react";
 import styled from "styled-components";
@@ -62,6 +62,27 @@ export default function Show({ user, post }) {
                         <Slate initialValue={initialValue} editor={editor}>
                             <TextEditor editor={editor} readOnly={true} />
                         </Slate>
+                        {
+                            post.user_id === user.id &&
+                            <section
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "1rem",
+                                    marginTop: "1rem"
+                                }}
+                            >
+                                <Link href={`/post/${post.id}/edit`}>
+                                    <Button>Edit Post</Button>
+                                </Link>
+                                <Button
+                                    color="red"
+                                    onClick={() => router.delete(`/post/${post.id}`)}
+                                >
+                                    Delete Post
+                                </Button>
+                            </section>
+                        }
                     </Card>
                 </CardWrapper>
             </Main>
