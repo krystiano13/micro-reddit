@@ -55,7 +55,14 @@ export function Navigation({ children, user }: Props) {
         >
             <AppShell.Header>
                 <Header>
-                    <Title c="blue" order={2}>REDDIT:RE</Title>
+                    <Link style={{ textDecoration: "none" }} href="/">
+                        <Title
+                            c="blue"
+                            order={2}
+                        >
+                            REDDIT:RE
+                        </Title>
+                    </Link>
                     <Input
                         placeholder="search"
                         name="reddit"

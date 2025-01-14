@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
   def index
-    render inertia: "Home", layout: "application"
+    redirect_to post_index_path
   end
 end

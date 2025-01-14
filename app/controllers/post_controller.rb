@@ -10,9 +10,15 @@ class PostController < ApplicationController
       page = params[:page]
     end
 
-    @posts = Post.all.limit(10).offset(page * 10).order(created_at: :desc)
+    @posts =
+      Post.joins("INNER JOIN subreddit_followers ON posts.subreddit_id = subreddit_followers.subreddit_id")
+          .where(subreddit_followers: { user_id: current_user.id })
+          .or(Post.where(subreddit_id: Subreddit.where(user_id: current_user.id)))
+          .order(created_at: :desc) .limit(10)
+          .offset(page * 10)
 
-    render inertia "Post/Index", layout: "application", props: {
+
+    render inertia: "Home", layout: "application", props: {
       posts: @posts
     }
   end
@@ -21,7 +27,7 @@ class PostController < ApplicationController
     @post = Post.find(params[:id])
 
     if @post.present?
-      return render inertia "Post/Show", layout: "application", props: {
+      return render inertia: "Post/Show", layout: "application", props: {
         post: @post
       }
     end
