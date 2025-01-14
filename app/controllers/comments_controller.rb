@@ -16,8 +16,20 @@ class CommentsController < ApplicationController
 
   def update
     @comment = Comment.find(params[:id])
-    @comment.update(comment_params)
-    redirect_back(fallback_location: root_path)
+
+    unless @comment.present?
+      return render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+    end
+
+    if @comment.update(comment_params)
+      redirect_to post_path(id: params[:post_id]), inertia: {
+        notice: 'Comment was successfully updated.'
+      }
+    else
+      redirect_to post_path(id: params[:post_id]), inertia: {
+        errors: @comment.errors.full_messages
+      }
+    end
   end
 
   def destroy
