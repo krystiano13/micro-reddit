@@ -1,18 +1,8 @@
 class SubredditController < ApplicationController
   before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
+  before_action :pagination_and_search, only: [ :index, :show ]
   def index
-    search = ""
-    page = 0
-
     subreddits = []
-
-    if params[:search]
-      search = params[:search]
-    end
-
-    if params[:page]
-      page = params[:page]
-    end
 
     unless params[:your] or params[:follow]
       if search
@@ -42,7 +32,7 @@ class SubredditController < ApplicationController
       subreddits:,
       search:,
       follow: params[:follow],
-      your: params[:your],
+      your: params[:your]
     }
   end
 
@@ -60,10 +50,16 @@ class SubredditController < ApplicationController
     end
 
     if id and @subreddit
+      @posts = Post.where(subreddit_id: @subreddit.id)
+                   .where("name like ?", "%#{search}%")
+                   .limit(10)
+                   .offset(@page * 10)
+
       render inertia: "Subreddit/Show", layout: "application", props: {
         id: params[:id],
         subreddit: @subreddit,
-        subreddit_follower:
+        subreddit_follower:,
+        posts: @posts
       }
     else
       render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
@@ -147,5 +143,19 @@ class SubredditController < ApplicationController
   private
   def subreddit_params
     params.require(:subreddit).permit(:name, :user_id)
+  end
+
+  private
+  def pagination_and_search
+    @search = ""
+    @page = 0
+
+    if params[:search]
+      @search = params[:search]
+    end
+
+    if params[:page]
+      @page = params[:page]
+    end
   end
 end

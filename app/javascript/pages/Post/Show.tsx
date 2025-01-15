@@ -63,25 +63,30 @@ export default function Show({ user, post }) {
                             <TextEditor editor={editor} readOnly={true} />
                         </Slate>
                         {
-                            post.user_id === user.id &&
-                            <section
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: "1rem",
-                                    marginTop: "1rem"
-                                }}
-                            >
-                                <Link href={`/post/${post.id}/edit`}>
-                                    <Button>Edit Post</Button>
-                                </Link>
-                                <Button
-                                    color="red"
-                                    onClick={() => router.delete(`/post/${post.id}`)}
-                                >
-                                    Delete Post
-                                </Button>
-                            </section>
+                            user &&
+                            <>
+                                {
+                                    post.user_id === user.id &&
+                                    <section
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "1rem",
+                                            marginTop: "1rem"
+                                        }}
+                                    >
+                                        <Link href={`/post/${post.id}/edit`}>
+                                            <Button>Edit Post</Button>
+                                        </Link>
+                                        <Button
+                                            color="red"
+                                            onClick={() => router.delete(`/post/${post.id}`)}
+                                        >
+                                            Delete Post
+                                        </Button>
+                                    </section>
+                                }
+                            </>
                         }
                     </Card>
                 </CardWrapper>
