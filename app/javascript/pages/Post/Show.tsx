@@ -29,7 +29,7 @@ const initialValue = [
     },
 ]
 
-export default function Show({ user, post }) {
+export default function Show({ user, post, comments }) {
     const [editor] = useState(() => withReact(createEditor()))
     const [comment, setComment] = useState<string>("");
 
@@ -62,15 +62,15 @@ export default function Show({ user, post }) {
                             padding: "1.5rem",
                             borderRadius: "1rem"
                         }}>
-                        <Title order={1}>{ post.title }</Title>
+                        <Title order={1}>{post.title}</Title>
                         <Text>
-                            <b>By:</b> { post.username }
+                            <b>By:</b> {post.username}
                         </Text>
                         <Text>
-                            <b>Created At:</b> { moment(post.created_at).format("DD-MM-YYYY")}
+                            <b>Created At:</b> {moment(post.created_at).format("DD-MM-YYYY")}
                         </Text>
                         <Slate initialValue={initialValue} editor={editor}>
-                            <TextEditor editor={editor} readOnly={true} />
+                            <TextEditor editor={editor} readOnly={true}/>
                         </Slate>
                         {
                             user &&
@@ -116,7 +116,7 @@ export default function Show({ user, post }) {
                                     placeholder="Your comment"
                                     onChange={(event) => setComment(event.currentTarget.value)}
                                 >
-                                    { comment }
+                                    {comment}
                                 </Textarea>
                                 <Button
                                     type="submit"
@@ -130,6 +130,32 @@ export default function Show({ user, post }) {
                         </Card>
                     </CardWrapper>
                 }
+                <CardWrapper>
+                    <section
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "1rem",
+                            marginTop: "1rem",
+                            width: "100%",
+                            height: "100%"
+                        }}
+                    >
+                        <section>
+                            {
+                                comments.map(item => (
+                                    <Card style={{ marginBottom: "1rem" }}>
+                                        <Title order={4}>{ item.username }</Title>
+                                        <Title order={5}>
+                                            { moment(item.created_at).format("DD-MM-YYYY HH:mm") }
+                                        </Title>
+                                        <Text>{ item.body }</Text>
+                                    </Card>
+                                ))
+                            }
+                        </section>
+                    </section>
+                </CardWrapper>
             </Main>
         </Navigation>
     )
