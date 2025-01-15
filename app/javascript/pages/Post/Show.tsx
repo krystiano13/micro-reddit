@@ -29,9 +29,14 @@ const initialValue = [
     },
 ]
 
-export default function Show({ user, post, comments, errors }) {
+export default function Show({ user, post, errors }) {
     const [editor] = useState(() => withReact(createEditor()))
     const [comment, setComment] = useState<string>("");
+    const [comments, setComments] = useState([]);
+
+    async function getComments() {
+
+    }
 
     async function sendComment() {
         if(user.id) {

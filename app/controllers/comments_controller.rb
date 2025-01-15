@@ -1,4 +1,18 @@
 class CommentsController < ApplicationController
+  def index
+    @comments = []
+    if params[:post_id]
+      @comments = Comment.joins(:user)
+                         .select("comments.*, users.name AS username")
+                         .where(post_id: params[:post_id])
+                         .order(created_at: :desc)
+    end
+
+    render json: {
+      comments: @comments,
+    }, status: :ok
+  end
+
   def create
     @comment = Comment.create(comment_params)
     @comment.user_id = current_user.id
