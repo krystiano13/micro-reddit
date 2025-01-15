@@ -4,13 +4,13 @@ class CommentsController < ApplicationController
     @comment.user_id = current_user.id
 
     if @comment.save
-      redirect_to post_path(id: params[:post_id]), inertia: {
-        notice: 'Comment was successfully created.'
-      }
+      render json: {
+        comment: @comment
+      }, status: :ok
     else
-      redirect_to post_path(id: params[:post_id]), inertia: {
+      render json: {
         errors: @comment.errors.full_messages
-      }
+      }, status: :unprocessable_content
     end
   end
 
@@ -18,15 +18,17 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
 
     unless @comment.present?
-      return render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
+      return render json: {
+        errors: ["Comment not found"]
+      }, status: :not_found
     end
 
     if @comment.update(comment_params)
-      redirect_to post_path(id: params[:post_id]), inertia: {
-        notice: 'Comment was successfully updated.'
-      }
+      render json: {
+        comment: @comment
+      }, status: :ok
     else
-      redirect_to post_path(id: params[:post_id]), inertia: {
+      render json: {
         errors: @comment.errors.full_messages
       }
     end
@@ -39,7 +41,9 @@ class CommentsController < ApplicationController
       @comment.destroy
     end
 
-    redirect_back(fallback_location: root_path)
+    render json: {
+      message: "Destroyed"
+    }, status: :ok
   end
 
   private

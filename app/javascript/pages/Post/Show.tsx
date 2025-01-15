@@ -29,13 +29,13 @@ const initialValue = [
     },
 ]
 
-export default function Show({ user, post, comments }) {
+export default function Show({ user, post, comments, errors }) {
     const [editor] = useState(() => withReact(createEditor()))
     const [comment, setComment] = useState<string>("");
 
-    function sendComment() {
+    async function sendComment() {
         if(user.id) {
-           router.post(`/comments/${post.id}`, {
+           await router.post(`/comments/${post.id}`, {
                 body: comment,
                 post_id: post.id
            });
@@ -47,6 +47,7 @@ export default function Show({ user, post, comments }) {
             Transforms.insertNodes(editor, JSON.parse(post.body), { at: [0, 0] });
         }
     }, [editor, post.body]);
+
 
     return (
         <Navigation user={user}>
@@ -141,7 +142,7 @@ export default function Show({ user, post, comments }) {
                             height: "100%"
                         }}
                     >
-                        <section>
+                        <section id={comments.length.toString() ?? "-1"}>
                             {
                                 comments.map(item => (
                                     <Card style={{ marginBottom: "1rem" }}>

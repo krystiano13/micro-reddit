@@ -38,6 +38,7 @@ class PostController < ApplicationController
       @comments = Comment.joins(:user)
                          .select("comments.*, users.name AS username")
                          .where(post_id: @post.id)
+                         .order(created_at: :desc)
 
       return render inertia: "Post/Show", layout: "application", props: {
         post: @post,
