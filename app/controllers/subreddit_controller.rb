@@ -51,7 +51,7 @@ class SubredditController < ApplicationController
 
     if id and @subreddit
       @posts = Post.where(subreddit_id: @subreddit.id)
-                   .where("name like ?", "%#{search}%")
+                   .where("title like ?", "%#{@search}%")
                    .limit(10)
                    .offset(@page * 10)
 
