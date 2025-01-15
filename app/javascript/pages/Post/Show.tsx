@@ -35,7 +35,11 @@ export default function Show({ user, post, errors }) {
     const [comments, setComments] = useState([]);
 
     async function getComments() {
-
+        await fetch(`/comments/${post.id}`)
+            .then(res => res.json())
+            .then(data => {
+                setComments([...data.comments])
+            })
     }
 
     async function sendComment() {
@@ -52,6 +56,10 @@ export default function Show({ user, post, errors }) {
             Transforms.insertNodes(editor, JSON.parse(post.body), { at: [0, 0] });
         }
     }, [editor, post.body]);
+
+    useEffect(() => {
+        getComments();
+    }, []);
 
 
     return (
@@ -149,7 +157,7 @@ export default function Show({ user, post, errors }) {
                     >
                         <section id={comments.length.toString() ?? "-1"}>
                             {
-                                comments.map(item => (
+                                comments && comments.map(item => (
                                     <Card style={{ marginBottom: "1rem" }}>
                                         <Title order={4}>{ item.username }</Title>
                                         <Title order={5}>

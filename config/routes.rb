@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   post "/subreddit_followers/:subreddit_id", to: "subreddit_follower#create", as: :subreddit_followers_create
   delete "/subreddit_followers/:id", to: "subreddit_follower#destroy", as: :subreddit_follower_destroy
 
+  get "/comments/:post_id", to: "comments#index", as: :comment
   post "/comments/:post_id", to: "comments#create", as: :comments_create
   patch "/comments/:id", to: "comments#update", as: :comments_update
   delete "/comments/:id", to: "comments#destroy", as: :comments_destroy
