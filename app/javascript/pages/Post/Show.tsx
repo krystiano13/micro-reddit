@@ -1,6 +1,6 @@
 import { Navigation } from "../components/Navigation.tsx";
 import { Head, Link, router } from "@inertiajs/react";
-import { Card, Title, Text, Button } from "@mantine/core";
+import { Card, Title, Text, Button, Textarea } from "@mantine/core";
 import { useState, useEffect } from "react";
 import { Slate, withReact } from "slate-react";
 import styled from "styled-components";
@@ -31,6 +31,16 @@ const initialValue = [
 
 export default function Show({ user, post }) {
     const [editor] = useState(() => withReact(createEditor()))
+    const [comment, setComment] = useState<string>("");
+
+    function sendComment() {
+        if(user.id) {
+           router.post(`/comments/${post.id}`, {
+                body: comment,
+                post_id: post.id
+           });
+        }
+    }
 
     useEffect(() => {
         if(post.body) {
@@ -90,6 +100,36 @@ export default function Show({ user, post }) {
                         }
                     </Card>
                 </CardWrapper>
+                {
+                    user &&
+                    <CardWrapper>
+                        <Card>
+                            <form
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: "1rem"
+                                }}
+                                onSubmit={sendComment}
+                            >
+                                <Textarea
+                                    placeholder="Your comment"
+                                    onChange={(event) => setComment(event.currentTarget.value)}
+                                >
+                                    { comment }
+                                </Textarea>
+                                <Button
+                                    type="submit"
+                                    style={{
+                                        maxWidth: "15rem"
+                                    }}
+                                >
+                                    Send
+                                </Button>
+                            </form>
+                        </Card>
+                    </CardWrapper>
+                }
             </Main>
         </Navigation>
     )
