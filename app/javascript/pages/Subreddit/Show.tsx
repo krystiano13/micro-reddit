@@ -1,6 +1,7 @@
-import {Head, Link, router} from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
+import { useState, useEffect } from "react";
 import { Navigation } from "../components/Navigation.tsx";
-import {Title, Button, Card, Text} from "@mantine/core";
+import { Title, Button, Card, Text } from "@mantine/core";
 import styled from "styled-components";
 import moment from "moment/moment";
 
@@ -16,8 +17,13 @@ const CardWrapper = styled.div`
     }
 `;
 
-
-export default function Show({ user, subreddit, id, subreddit_follower, posts }: { user: any, subreddit: any, id: any }) {
+export default function Show({user, subreddit, id, subreddit_follower, posts, document}: {
+    user: any,
+    subreddit: any,
+    id: any,
+    document
+}) {
+    const [bottom, setBottom] = useState<boolean>(false);
     async function deleteSubreddit() {
         await router.delete(`/subreddit/${id}`);
     }

@@ -11,6 +11,12 @@ class PostController < ApplicationController
       page = params[:page]
     end
 
+    @all_pages = ((Post.all.count / 5)).round
+
+    if (page.to_i + 1) > @all_pages
+      page = @all_pages - 1
+    end
+
     if current_user
       subreddits_followed_by_user = SubredditFollower.where(user_id: current_user.id).select(:subreddit_id)
       subreddits_created_by_user = Subreddit.where(user_id: current_user.id).select(:id)
@@ -20,14 +26,15 @@ class PostController < ApplicationController
                    .joins("INNER JOIN users ON subreddits.user_id = users.id")
                    .select("posts.*, users.name AS username")
                    .order(created_at: :desc)
-                   .limit(10)
-                   .offset(page * 10)
+                   .limit(5)
+                   .offset(page * 5)
     else
-      @posts = Post.all.order(created_at: :desc).limit(10).offset(page * 10)
+      @posts = Post.all.order(created_at: :desc).limit(5).offset(page * 5)
     end
 
     render inertia: "Home", layout: "application", props: {
-      posts: @posts
+      posts: @posts,
+      all_pages: @all_pages
     }
   end
 
