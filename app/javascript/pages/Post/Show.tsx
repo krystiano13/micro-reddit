@@ -30,36 +30,88 @@ const initialValue = [
 ]
 
 const Comment = ({ username, createdAt, body, user, userId, commentId, getComments }) => {
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [content, setContent] = useState<string>(body);
+
     return (
         <Card style={{ marginBottom: "1rem" }}>
             <Title order={4}>{ username }</Title>
             <Title order={5}>
                 { moment(createdAt).format("DD-MM-YYYY HH:mm") }
             </Title>
-            <Text>{ body }</Text>
             {
-                user && user.id === userId &&
-                <section
-                    style={{
-                        display: "flex",
-                        gap: "1rem"
+                editMode &&
+                <form
+                    onSubmit={async () => {
+                        await router.patch(`/comments/${commentId}`, {
+                            body: content
+                        });
+
+                        await getComments();
                     }}
                 >
-                    <Button>
-                        Edit
-                    </Button>
-                    <form onSubmit={async () => {
-                        await router.delete(`/comments/${commentId}`);
-                        await getComments();
-                    }}>
+                    <Textarea
+                        style={{ marginTop: "1rem" }}
+                        required
+                        onChange={(e) => setContent(e.target.value)}
+                    >
+                        { content }
+                    </Textarea>
+                    <section
+                        style={{
+                            display: "flex",
+                            gap: ".5rem",
+                            marginTop: "1rem"
+                        }}
+                    >
                         <Button
-                            color="red"
                             type="submit"
                         >
-                            Delete
+                            Update
                         </Button>
-                    </form>
-                </section>
+                        <Button
+                            color="red"
+                            onClick={() => setEditMode(false)}
+                        >
+                            Cancel
+                        </Button>
+                    </section>
+                </form>
+            }
+            {
+                !editMode &&
+                <>
+                    <Text>{body}</Text>
+                    {
+                        user && user.id === userId &&
+                        <section
+                            style={{
+                                display: "flex",
+                                gap: ".5rem"
+                            }}
+                        >
+                            <Button
+                                onClick={() => {
+                                    setEditMode(true);
+                                    setContent(body);
+                                }}
+                            >
+                                Edit
+                            </Button>
+                            <form onSubmit={async () => {
+                                await router.delete(`/comments/${commentId}`);
+                                await getComments();
+                            }}>
+                                <Button
+                                    color="red"
+                                    type="submit"
+                                >
+                                    Delete
+                                </Button>
+                            </form>
+                        </section>
+                    }
+                </>
             }
         </Card>
     )
