@@ -1,7 +1,7 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import { Navigation } from "./components/Navigation.tsx";
 import styled from "styled-components";
-import { Card, Title, Text } from "@mantine/core";
+import { Card, Title, Text, Button } from "@mantine/core";
 import moment from 'moment';
 
 const Main = styled.main`
@@ -25,7 +25,9 @@ const CardWrapper = styled.div`
     }
 `;
 
-export default function Home({ user, posts, all_pages }: { user: any }) {
+export default function Home({ user, posts, all_pages, page }: { user: any }) {
+    console.log(all_pages);
+    console.log(page)
     return (
         <Navigation user={user}>
             <Head title="REDDIT:RE" />
@@ -55,6 +57,31 @@ export default function Home({ user, posts, all_pages }: { user: any }) {
                        </Link>
                     ))
                 }
+                <section
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem"
+                    }}
+                >
+                    <Button
+                        disabled={page <= 0}
+                        onClick={() => {
+                            router.get(`/post?page=${(page - 1) > 0 ? (page - 1) : 0}`)
+                        }}
+                    >
+                        {"<"}
+                    </Button>
+                    <Title order={2}>{page}</Title>
+                    <Button
+                        disabled={page >= all_pages - 1}
+                        onClick={() => {
+                            router.get(`/post?page=${(page + 1) < (all_pages - 1) ? (page + 1) : (all_pages - 1)}`)
+                        }}
+                    >
+                        {">"}
+                    </Button>
+                </section>
             </Main>
         </Navigation>
     )

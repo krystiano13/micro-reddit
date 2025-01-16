@@ -7,7 +7,7 @@ class PostController < ApplicationController
   before_action :pagination_and_search, only: [ :index ]
 
   def index
-    @all_pages = ((Post.all.count / 5)).ceil
+    @all_pages = ((Post.all.count.to_f / 5)).ceil
 
     if (@page.to_i + 1) > @all_pages
       @page = @all_pages - 1
@@ -23,9 +23,9 @@ class PostController < ApplicationController
                    .select("posts.*, users.name AS username")
                    .order(created_at: :desc)
                    .limit(5)
-                   .offset(@page * 5)
+                   .offset(@page.to_i * 5)
     else
-      @posts = Post.all.order(created_at: :desc).limit(5).offset(@page * 5)
+      @posts = Post.all.order(created_at: :desc).limit(5).offset(@page.to_i * 5)
     end
 
     render inertia: "Home", layout: "application", props: {

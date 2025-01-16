@@ -8,7 +8,7 @@ class SubredditController < ApplicationController
     subreddits = []
     @all_pages = 0
 
-    @all_pages = (Subreddit.all.count / 10).ceil
+    @all_pages = (Subreddit.all.count.to_f / 10).ceil
 
     if (@page.to_i + 1) > @all_pages
       @page = @all_pages - 1
@@ -59,7 +59,7 @@ class SubredditController < ApplicationController
     end
 
     if current_user and @subreddit.present?
-      @all_pages = (Post.where(subreddit_id: @subreddit.id).count / 5).ceil
+      @all_pages = (Post.where(subreddit_id: @subreddit.id).count.to_f / 5).ceil
 
       if (@page.to_i + 1) > @all_pages
         @page = @all_pages - 1
@@ -73,6 +73,7 @@ class SubredditController < ApplicationController
                    .where("title like ?", "%#{@search}%")
                    .limit(5)
                    .offset(@page * 5)
+                   .order(created_at: :desc)
 
       render inertia: "Subreddit/Show", layout: "application", props: {
         id: params[:id],
