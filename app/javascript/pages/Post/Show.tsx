@@ -29,7 +29,7 @@ const initialValue = [
     },
 ]
 
-const Comment = ({ username, createdAt, body, user, userId, commentId }) => {
+const Comment = ({ username, createdAt, body, user, userId, commentId, getComments }) => {
     return (
         <Card style={{ marginBottom: "1rem" }}>
             <Title order={4}>{ username }</Title>
@@ -48,14 +48,17 @@ const Comment = ({ username, createdAt, body, user, userId, commentId }) => {
                     <Button>
                         Edit
                     </Button>
-                    <Button
-                        color="red"
-                        onClick={() => {
-                            router.delete(`/comments/${commentId}`)
-                        }}
-                    >
-                        Delete
-                    </Button>
+                    <form onSubmit={async () => {
+                        await router.delete(`/comments/${commentId}`);
+                        await getComments();
+                    }}>
+                        <Button
+                            color="red"
+                            type="submit"
+                        >
+                            Delete
+                        </Button>
+                    </form>
                 </section>
             }
         </Card>
@@ -194,6 +197,7 @@ export default function Show({ user, post, errors }) {
                             {
                                 comments && comments.map(item => (
                                     <Comment
+                                        getComments={getComments}
                                         commentId={item.id}
                                         userId={item.user_id}
                                         user={user}
