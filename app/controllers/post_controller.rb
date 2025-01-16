@@ -11,7 +11,7 @@ class PostController < ApplicationController
       page = params[:page]
     end
 
-    @all_pages = ((Post.all.count / 5)).round
+    @all_pages = ((Post.all.count / 5)).ceil
 
     if (page.to_i + 1) > @all_pages
       page = @all_pages - 1

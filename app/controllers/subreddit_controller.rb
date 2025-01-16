@@ -1,8 +1,16 @@
 class SubredditController < ApplicationController
   before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
   before_action :pagination_and_search, only: [ :index, :show ]
+
   def index
     subreddits = []
+    @all_pages = 0
+
+    @all_pages = (Subreddit.all.count / 10).ceil
+
+    if (@page.to_i + 1) > @all_pages
+      @page = @all_pages - 1
+    end
 
     unless params[:your] or params[:follow]
       if @search
@@ -32,13 +40,15 @@ class SubredditController < ApplicationController
       subreddits:,
       search: @search,
       follow: params[:follow],
-      your: params[:your]
+      your: params[:your],
+      all_pages: @all_pages
     }
   end
 
   def show
     id = params[:id]
     @subreddit = nil
+    @all_pages = 0
     subreddit_follower = nil
 
     if id
@@ -46,20 +56,27 @@ class SubredditController < ApplicationController
     end
 
     if current_user and @subreddit.present?
+      @all_pages = (Post.where(subreddit_id: @subreddit.id).count / 5).ceil
+
+      if (@page.to_i + 1) > @all_pages
+        @page = @all_pages - 1
+      end
+
       subreddit_follower = SubredditFollower.find_by(subreddit_id: id, user_id: current_user.id)
     end
 
     if id and @subreddit
       @posts = Post.where(subreddit_id: @subreddit.id)
                    .where("title like ?", "%#{@search}%")
-                   .limit(10)
-                   .offset(@page * 10)
+                   .limit(5)
+                   .offset(@page * 5)
 
       render inertia: "Subreddit/Show", layout: "application", props: {
         id: params[:id],
         subreddit: @subreddit,
         subreddit_follower:,
-        posts: @posts
+        posts: @posts,
+        all_pages: @all_pages,
       }
     else
       render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
