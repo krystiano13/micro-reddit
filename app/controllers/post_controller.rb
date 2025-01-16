@@ -1,20 +1,16 @@
 class PostController < ApplicationController
+  include PaginationAndSearch
+
   before_action :authenticate_user!, except: [ :index, :show ]
   before_action :redirect_if_no_follow, only: [ :new ]
   before_action :redirect_if_no_owner, only: [ :edit, :update, :destroy ]
+  before_action :pagination_and_search, only: [ :index ]
 
   def index
-    page = 0
-    search = nil
-
-    if params[:page]
-      page = params[:page]
-    end
-
     @all_pages = ((Post.all.count / 5)).ceil
 
-    if (page.to_i + 1) > @all_pages
-      page = @all_pages - 1
+    if (@page.to_i + 1) > @all_pages
+      @page = @all_pages - 1
     end
 
     if current_user
@@ -27,14 +23,15 @@ class PostController < ApplicationController
                    .select("posts.*, users.name AS username")
                    .order(created_at: :desc)
                    .limit(5)
-                   .offset(page * 5)
+                   .offset(@page * 5)
     else
-      @posts = Post.all.order(created_at: :desc).limit(5).offset(page * 5)
+      @posts = Post.all.order(created_at: :desc).limit(5).offset(@page * 5)
     end
 
     render inertia: "Home", layout: "application", props: {
       posts: @posts,
-      all_pages: @all_pages
+      all_pages: @all_pages,
+      page: @page
     }
   end
 

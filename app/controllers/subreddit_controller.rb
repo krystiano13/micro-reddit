@@ -1,4 +1,6 @@
 class SubredditController < ApplicationController
+  include PaginationAndSearch
+
   before_action :authenticate_user!, only: [ :new, :create, :edit, :update, :destroy ]
   before_action :pagination_and_search, only: [ :index, :show ]
 
@@ -41,7 +43,8 @@ class SubredditController < ApplicationController
       search: @search,
       follow: params[:follow],
       your: params[:your],
-      all_pages: @all_pages
+      all_pages: @all_pages,
+      page: @page
     }
   end
 
@@ -77,6 +80,7 @@ class SubredditController < ApplicationController
         subreddit_follower:,
         posts: @posts,
         all_pages: @all_pages,
+        page: @page
       }
     else
       render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found
@@ -160,19 +164,5 @@ class SubredditController < ApplicationController
   private
   def subreddit_params
     params.require(:subreddit).permit(:name, :user_id)
-  end
-
-  private
-  def pagination_and_search
-    @search = ""
-    @page = 0
-
-    if params[:search]
-      @search = params[:search]
-    end
-
-    if params[:page]
-      @page = params[:page]
-    end
   end
 end
