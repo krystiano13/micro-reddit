@@ -17,7 +17,7 @@ const CardWrapper = styled.div`
     }
 `;
 
-export default function Show({user, subreddit, id, subreddit_follower, posts, page, all_pages}: {
+export default function Show({user, search, subreddit, id, subreddit_follower, posts, page, all_pages}: {
     user: any,
     subreddit: any,
     id: any
@@ -35,8 +35,30 @@ export default function Show({user, subreddit, id, subreddit_follower, posts, pa
         await router.post(`/subreddit_followers/${subreddit.id}`)
     }
 
+    const [searchValue, setSearchValue] = useState<string>(search ? search : "");
+    const [firstRender, setFirstRender] = useState<boolean>(true);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if(!firstRender) {
+                router.get(`/subreddit/${subreddit.id}?search=${searchValue}`)
+            }
+            else {
+                setFirstRender(false)
+            }
+        }, 300);
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [searchValue]);
+
     return (
-        <Navigation user={user}>
+        <Navigation
+            search={searchValue}
+            searchFunc={(value:string) => setSearchValue(value)}
+            user={user}
+        >
             <Head title="REDDIT:RE" />
             <Title>{ subreddit.name }</Title>
             <section

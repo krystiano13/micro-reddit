@@ -72,6 +72,7 @@ export function Navigation({ children, user, searchFunc, search }: Props) {
                         radius="lg"
                         defaultValue={search ?? ""}
                         style={{ minWidth: "16rem" }}
+                        autoFocus={true}
                         onChange={searchFunc ? (e) => searchFunc(e.target.value) : () => {}}
                     />
                     <Burger

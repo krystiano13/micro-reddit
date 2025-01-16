@@ -3,7 +3,7 @@ import { Navigation } from "./components/Navigation.tsx";
 import styled from "styled-components";
 import { Card, Title, Text, Button } from "@mantine/core";
 import moment from 'moment';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 const Main = styled.main`
     width: 100%;
