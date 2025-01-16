@@ -34,40 +34,48 @@ export default function Show({ user, subreddit, id, subreddit_follower, posts }:
         <Navigation user={user}>
             <Head title="REDDIT:RE" />
             <Title>{ subreddit.name }</Title>
-            {
-                user &&
-                <Button onClick={() => router.get(`/post/new/${subreddit.id}`)}>
-                    Create Post
-                </Button>
-            }
-            {
-                user && (subreddit.user_id !== user.id) && <>
-                    {
-                        subreddit_follower ?
-                            <Button
-                                onClick={unfollowSubreddit}
-                                color="red"
-                            >
-                                Unfollow Subreddit
-                            </Button>
-                            :
-                            <Button
-                                onClick={followSubreddit}
-                            >
-                                Follow Subreddit
-                            </Button>
-                    }
-                </>
-            }
-            {
-                user && subreddit.user_id === user.id &&
-                <Button 
-                    onClick={deleteSubreddit}
-                    color="red"
-                >
-                    Delete Subreddit
-                </Button>
-            }
+            <section
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: ".5rem"
+                }}
+            >
+                {
+                    user &&
+                    <Button onClick={() => router.get(`/post/new/${subreddit.id}`)}>
+                        Create Post
+                    </Button>
+                }
+                {
+                    user && (subreddit.user_id !== user.id) && <>
+                        {
+                            subreddit_follower ?
+                                <Button
+                                    onClick={unfollowSubreddit}
+                                    color="red"
+                                >
+                                    Unfollow Subreddit
+                                </Button>
+                                :
+                                <Button
+                                    onClick={followSubreddit}
+                                >
+                                    Follow Subreddit
+                                </Button>
+                        }
+                    </>
+                }
+                {
+                    user && subreddit.user_id === user.id &&
+                    <Button
+                        onClick={deleteSubreddit}
+                        color="red"
+                    >
+                        Delete Subreddit
+                    </Button>
+                }
+            </section>
             <br />
             <section
                 style={{
