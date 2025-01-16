@@ -51,7 +51,7 @@ interface Props {
     follow: any | null
 }
 
-export default function Index({ user, subreddits, search, your, follow }: Props) {
+export default function Index({ user, subreddits, search, your, follow, page, all_pages }: Props) {
     const [searchValue, setSearchValue] = useState<string>(search ? search : "");
     const [firstRender, setFirstRender] = useState<boolean>(true);
 
@@ -117,15 +117,40 @@ export default function Index({ user, subreddits, search, your, follow }: Props)
                 {
                     subreddits && subreddits.map(item => (
                         <Link
-                            style={{ textDecoration: "none" }}
+                            style={{textDecoration: "none"}}
                             href={`/subreddit/${item.id}`}
                         >
                             <Card>
-                                <Title>{ item.name }</Title>
+                                <Title>{item.name}</Title>
                             </Card>
                         </Link>
                     ))
                 }
+                <section
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem"
+                    }}
+                >
+                    <Button
+                        disabled={page <= 0}
+                        onClick={() => {
+                            router.get(`/subreddit?page=${(page - 1) > 0 ? (page - 1) : 0}`)
+                        }}
+                    >
+                        {"<"}
+                    </Button>
+                    <Title order={2}>{page}</Title>
+                    <Button
+                        disabled={page >= all_pages - 1}
+                        onClick={() => {
+                            router.get(`/subreddit?page=${(page + 1) < (all_pages - 1) ? (page + 1) : (all_pages - 1)}`)
+                        }}
+                    >
+                        {">"}
+                    </Button>
+                </section>
             </Main>
         </Navigation>
     )

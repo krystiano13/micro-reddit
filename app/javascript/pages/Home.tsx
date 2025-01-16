@@ -26,8 +26,6 @@ const CardWrapper = styled.div`
 `;
 
 export default function Home({ user, posts, all_pages, page }: { user: any }) {
-    console.log(all_pages);
-    console.log(page)
     return (
         <Navigation user={user}>
             <Head title="REDDIT:RE" />

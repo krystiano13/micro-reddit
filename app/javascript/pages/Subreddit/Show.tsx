@@ -17,11 +17,10 @@ const CardWrapper = styled.div`
     }
 `;
 
-export default function Show({user, subreddit, id, subreddit_follower, posts, document}: {
+export default function Show({user, subreddit, id, subreddit_follower, posts, page, all_pages}: {
     user: any,
     subreddit: any,
-    id: any,
-    document
+    id: any
 }) {
     const [bottom, setBottom] = useState<boolean>(false);
     async function deleteSubreddit() {
@@ -93,7 +92,7 @@ export default function Show({user, subreddit, id, subreddit_follower, posts, do
             >
                 {
                     posts.map(post => (
-                        <Link style={{ textDecoration: "none" }} href={`/post/${post.id}`}>
+                        <Link style={{textDecoration: "none"}} href={`/post/${post.id}`}>
                             <CardWrapper>
                                 <Card
                                     style={{
@@ -104,18 +103,43 @@ export default function Show({user, subreddit, id, subreddit_follower, posts, do
                                         padding: "1.5rem",
                                         borderRadius: "1rem"
                                     }}>
-                                    <Title order={1}>{ post.title }</Title>
+                                    <Title order={1}>{post.title}</Title>
                                     <Text>
-                                        <b>By:</b> { post.username }
+                                        <b>By:</b> {post.username}
                                     </Text>
                                     <Text>
-                                        <b>Created At:</b> { moment(post.created_at).format("DD-MM-YYYY")}
+                                        <b>Created At:</b> {moment(post.created_at).format("DD-MM-YYYY")}
                                     </Text>
                                 </Card>
                             </CardWrapper>
                         </Link>
                     ))
                 }
+                <section
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "1rem"
+                    }}
+                >
+                    <Button
+                        disabled={page <= 0}
+                        onClick={() => {
+                            router.get(`/subreddit/${subreddit.id}?page=${(page - 1) > 0 ? (page - 1) : 0}`)
+                        }}
+                    >
+                        {"<"}
+                    </Button>
+                    <Title order={2}>{page}</Title>
+                    <Button
+                        disabled={page >= all_pages - 1}
+                        onClick={() => {
+                            router.get(`/subreddit/${subreddit.id}?page=${(page + 1) < (all_pages - 1) ? (page + 1) : (all_pages - 1)}`)
+                        }}
+                    >
+                        {">"}
+                    </Button>
+                </section>
             </section>
         </Navigation>
     )
