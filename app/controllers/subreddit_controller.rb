@@ -24,7 +24,7 @@ class SubredditController < ApplicationController
 
     if params[:your]
       if search
-        subreddits = Subreddit.where("name like ?", "%#{search}%").where(user_id: current_user.id).limit(10).offset(@page.to_i * 10)
+        subreddits = Subreddit.where("name like ?", "%#{@search}%").where(user_id: current_user.id).limit(10).offset(@page.to_i * 10)
       else
         subreddits = Subreddit.order(created_at: :desc).where(user_id: current_user.id).limit(10).offset(@page.to_i * 10)
       end
@@ -81,7 +81,8 @@ class SubredditController < ApplicationController
         subreddit_follower:,
         posts: @posts,
         all_pages: @all_pages,
-        page: @page
+        page: @page,
+        search: @search
       }
     else
       render file: "#{Rails.root}/public/404.html", layout: false, status: :not_found

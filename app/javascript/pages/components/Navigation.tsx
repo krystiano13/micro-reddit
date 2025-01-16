@@ -8,7 +8,9 @@ import styled from "styled-components";
 
 interface Props {
     children: ReactNode,
-    user: any
+    user: any,
+    searchFunc: (e) => void | null
+    search: string | null
 }
 
 const Header = styled.div`
@@ -35,7 +37,7 @@ const Nav = styled.div`
     }
 `;
 
-export function Navigation({ children, user }: Props) {
+export function Navigation({ children, user, searchFunc, search }: Props) {
     const [opened, { toggle }] = useDisclosure();
     const { setColorScheme } = useMantineColorScheme();
 
@@ -68,7 +70,9 @@ export function Navigation({ children, user }: Props) {
                         name="reddit"
                         type="text"
                         radius="lg"
+                        defaultValue={search ?? ""}
                         style={{ minWidth: "16rem" }}
+                        onChange={searchFunc ? (e) => searchFunc(e.target.value) : () => {}}
                     />
                     <Burger
                         opened={opened}

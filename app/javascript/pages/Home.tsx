@@ -3,6 +3,7 @@ import { Navigation } from "./components/Navigation.tsx";
 import styled from "styled-components";
 import { Card, Title, Text, Button } from "@mantine/core";
 import moment from 'moment';
+import {useEffect, useState} from "react";
 
 const Main = styled.main`
     width: 100%;
@@ -25,9 +26,31 @@ const CardWrapper = styled.div`
     }
 `;
 
-export default function Home({ user, posts, all_pages, page }: { user: any }) {
+export default function Home({ user, posts, all_pages, page, search }: { user: any }) {
+    const [searchValue, setSearchValue] = useState<string>(search ? search : "");
+    const [firstRender, setFirstRender] = useState<boolean>(true);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            if(!firstRender) {
+                router.get(`/post?search=${searchValue}`)
+            }
+            else {
+                setFirstRender(false)
+            }
+        }, 300);
+
+        return () => {
+            clearTimeout(timeout)
+        }
+    }, [searchValue]);
+
     return (
-        <Navigation user={user}>
+        <Navigation
+            search={searchValue}
+            searchFunc={(value:string) => setSearchValue(value)}
+            user={user}
+        >
             <Head title="REDDIT:RE" />
             <Main>
                 {

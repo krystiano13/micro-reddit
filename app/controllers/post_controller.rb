@@ -18,6 +18,7 @@ class PostController < ApplicationController
       subreddits_created_by_user = Subreddit.where(user_id: current_user.id).select(:id)
       @posts = Post.where(subreddit_id: subreddits_followed_by_user)
                    .or(Post.where(subreddit_id: subreddits_created_by_user))
+                   .where("title like ?", "%#{@search}%")
                    .joins(:subreddit)
                    .joins("INNER JOIN users ON subreddits.user_id = users.id")
                    .select("posts.*, users.name AS username")
@@ -31,7 +32,8 @@ class PostController < ApplicationController
     render inertia: "Home", layout: "application", props: {
       posts: @posts,
       all_pages: @all_pages,
-      page: @page
+      page: @page,
+      search: @search
     }
   end
 
