@@ -29,13 +29,13 @@ const initialValue = [
     },
 ]
 
-const Comment = ({ username, createdAt, body, user, userId, commentId, getComments }) => {
+const Comment = ({ username, createdAt, body, user, userId, commentId, getComments, edited }) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [content, setContent] = useState<string>(body);
 
     return (
         <Card style={{ marginBottom: "1rem" }}>
-            <Title order={4}>{ username }</Title>
+            <Title order={4}>{ username } { edited ? "(edited)" : "" }</Title>
             <Title order={5}>
                 { moment(createdAt).format("DD-MM-YYYY HH:mm") }
             </Title>
@@ -44,7 +44,8 @@ const Comment = ({ username, createdAt, body, user, userId, commentId, getCommen
                 <form
                     onSubmit={async () => {
                         await router.patch(`/comments/${commentId}`, {
-                            body: content
+                            body: content,
+                            edited: true
                         });
 
                         await getComments();
@@ -250,6 +251,7 @@ export default function Show({ user, post, errors }) {
                                 comments && comments.map(item => (
                                     <Comment
                                         getComments={getComments}
+                                        edited={item.edited}
                                         commentId={item.id}
                                         userId={item.user_id}
                                         user={user}
