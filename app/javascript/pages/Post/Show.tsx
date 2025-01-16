@@ -29,6 +29,39 @@ const initialValue = [
     },
 ]
 
+const Comment = ({ username, createdAt, body, user, userId, commentId }) => {
+    return (
+        <Card style={{ marginBottom: "1rem" }}>
+            <Title order={4}>{ username }</Title>
+            <Title order={5}>
+                { moment(createdAt).format("DD-MM-YYYY HH:mm") }
+            </Title>
+            <Text>{ body }</Text>
+            {
+                user && user.id === userId &&
+                <section
+                    style={{
+                        display: "flex",
+                        gap: "1rem"
+                    }}
+                >
+                    <Button>
+                        Edit
+                    </Button>
+                    <Button
+                        color="red"
+                        onClick={() => {
+                            router.delete(`/comments/${commentId}`)
+                        }}
+                    >
+                        Delete
+                    </Button>
+                </section>
+            }
+        </Card>
+    )
+}
+
 export default function Show({ user, post, errors }) {
     const [editor] = useState(() => withReact(createEditor()))
     const [comment, setComment] = useState<string>("");
@@ -43,11 +76,13 @@ export default function Show({ user, post, errors }) {
     }
 
     async function sendComment() {
-        if(user.id) {
+        if(user && user.id) {
            await router.post(`/comments/${post.id}`, {
                 body: comment,
                 post_id: post.id
            });
+
+           await getComments();
         }
     }
 
@@ -87,7 +122,7 @@ export default function Show({ user, post, errors }) {
                             <TextEditor editor={editor} readOnly={true}/>
                         </Slate>
                         {
-                            user &&
+                            user && user.id &&
                             <>
                                 {
                                     post.user_id === user.id &&
@@ -158,13 +193,14 @@ export default function Show({ user, post, errors }) {
                         <section id={comments.length.toString() ?? "-1"}>
                             {
                                 comments && comments.map(item => (
-                                    <Card style={{ marginBottom: "1rem" }}>
-                                        <Title order={4}>{ item.username }</Title>
-                                        <Title order={5}>
-                                            { moment(item.created_at).format("DD-MM-YYYY HH:mm") }
-                                        </Title>
-                                        <Text>{ item.body }</Text>
-                                    </Card>
+                                    <Comment
+                                        commentId={item.id}
+                                        userId={item.user_id}
+                                        user={user}
+                                        username={item.username}
+                                        createdAt={item.created_at}
+                                        body={item.body}
+                                    />
                                 ))
                             }
                         </section>
